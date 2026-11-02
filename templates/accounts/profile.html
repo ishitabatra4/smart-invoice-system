@@ -1,0 +1,48 @@
+
+{% extends "base.html" %}
+
+{% block title %}Business Settings | Smart Invoice{% endblock %}
+
+{% block content %}
+<section class="welcome-section">
+    <p class="eyebrow">WORKSPACE SETTINGS</p>
+    <h1>Business profile</h1>
+    <p class="muted">Manage the business details used for invoices and tax reports.</p>
+</section>
+
+<section class="activity-panel settings-panel">
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <h2>Business identity</h2>
+
+        <div class="settings-grid">
+            {% for field in form %}
+                <div class="form-field">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <small class="field-error">{{ error }}</small>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <p class="muted">
+            GSTIN and PAN format checks do not independently confirm registration
+            with a government database.
+        </p>
+
+        <button type="submit" class="primary-button settings-save">
+            Save business details
+        </button>
+    </form>
+</section>
+{% endblock %}

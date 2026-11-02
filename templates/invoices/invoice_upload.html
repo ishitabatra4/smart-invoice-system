@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+
+{% block title %}Upload Invoice | Smart Invoice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Upload Invoice</h1>
+        <p>Add an invoice PDF, scanned PDF or image.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{% url 'invoice_list' %}">
+        Back to Invoices
+    </a>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Invoice type</label>
+                <select class="form-select" name="invoice_type" required>
+                    <option value="purchase">Purchase Invoice</option>
+                    <option value="sales">Sales Invoice</option>
+                    <option value="expense">Expense Bill</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Invoice number</label>
+                <input class="form-control" type="text"
+                       name="invoice_number" maxlength="100" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Invoice date</label>
+                <input class="form-control" type="date"
+                       name="invoice_date" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Supplier name</label>
+                <input class="form-control" type="text"
+                       name="supplier_name" maxlength="255" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Supplier GSTIN (optional)</label>
+                <input class="form-control" type="text"
+                       name="supplier_gstin" maxlength="15">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Invoice file</label>
+                <input class="form-control" type="file"
+                       name="source_file"
+                       accept=".pdf,.png,.jpg,.jpeg"
+                       required>
+                <small class="text-muted">
+                    PDF, PNG, JPG or JPEG. Maximum 10 MB.
+                </small>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+                Upload Invoice
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

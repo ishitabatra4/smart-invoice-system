@@ -1,0 +1,93 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | Smart Invoice{% endblock %}
+
+{% block content %}
+<section class="welcome-section">
+    <p class="eyebrow">OVERVIEW</p>
+    <h1>Good to see you, {{ user.username }}.</h1>
+    <p class="muted">Your business activity, documents and financial overview—all in one place.</p>
+</section>
+
+{% if profile %}
+    <section class="business-banner">
+        <div>
+            <p class="eyebrow">CURRENT BUSINESS</p>
+            <h2>{{ profile.business_name }}</h2>
+            <p class="muted mb-0">
+                {% if profile.gstin %}GSTIN: {{ profile.gstin }}{% else %}
+                Add your GSTIN in business settings when applicable.
+                {% endif %}
+            </p>
+        </div>
+        <div class="business-mark">B</div>
+    </section>
+{% else %}
+    <section class="business-banner">
+        <div>
+            <p class="eyebrow">SETUP REQUIRED</p>
+            <h2>Complete your business profile</h2>
+            <p class="muted mb-0">Your admin account does not have a business profile yet.</p>
+        </div>
+    </section>
+{% endif %}
+
+<div class="section-heading">
+    <div>
+        <h2>Business overview</h2>
+        <p class="muted">Your financial snapshot will appear here as you add records.</p>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <article class="metric-card">
+        <span class="metric-label">Sales</span>
+        <h3>₹0.00</h3>
+        <p>Invoice tracking coming next</p>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Expenses</span>
+        <h3>₹0.00</h3>
+        <p>Expense tracking coming next</p>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Estimated profit</span>
+        <h3>₹0.00</h3>
+        <p>Based on recorded transactions</p>
+    </article>
+    <article class="metric-card">
+        <span class="metric-label">Documents processed</span>
+        <h3>0</h3>
+        <p>Invoices and bills</p>
+    </article>
+</div>
+
+<section class="activity-panel">
+    <div>
+        <h2>Get started</h2>
+        <p class="muted">Your workspace is ready for its first records.</p>
+    </div>
+    <div class="next-step">
+        <span class="step-number">01</span>
+        <div>
+            <strong>Set up your business</strong>
+            <p>Add business identity and tax registration details.</p>
+        </div>
+    </div>
+    <div class="next-step">
+        <span class="step-number">02</span>
+        <div>
+            <strong>Import your invoices</strong>
+            <p>We will build PDF/image extraction and invoice review next.</p>
+        </div>
+    </div>
+    <div class="next-step">
+        <span class="step-number">03</span>
+        <div>
+            <strong>Understand your numbers</strong>
+            <p>Sales, expenses, trends and tax-preparation reports.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

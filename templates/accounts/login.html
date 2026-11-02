@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+
+{% block title %}Login | Smart Invoice{% endblock %}
+
+{% block auth_content %}
+<div class="auth-card">
+    <a class="brand auth-brand" href="{% url 'login' %}">
+        <span class="brand-icon">S</span>
+        <span>Smart Invoice</span>
+    </a>
+
+    <p class="eyebrow">WELCOME BACK</p>
+    <h1>Log in to your workspace</h1>
+    <p class="muted">Enter your username and password to continue.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}
+                    <small class="field-error">{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+            <div class="field-error">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <button class="primary-button" type="submit">Log in →</button>
+    </form>
+
+    <p class="auth-footer">New here?
+        <a href="{% url 'register' %}">Create an account</a>
+    </p>
+</div>
+{% endblock %}

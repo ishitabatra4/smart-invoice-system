@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Invoice {{ invoice.invoice_number }} | Smart Invoice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Invoice Details</h1>
+        <p>Invoice {{ invoice.invoice_number }}</p>
+    </div>
+
+    <a href="{% url 'invoice_list' %}" class="btn btn-outline-secondary">
+        ← Back to Invoices
+    </a>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} mt-3">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+{% if invoice.validation_errors %}
+    <div class="alert alert-warning mt-4">
+        <h5>Validation Issues</h5>
+        <ul class="mb-0">
+            {% for error in invoice.validation_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="alert alert-success mt-4">
+        <strong>Validation:</strong> No validation issues found.
+    </div>
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5>Invoice Summary</h5>
+
+        <div class="row g-3 mt-1">
+            <div class="col-md-4">
+                <small class="text-muted">Invoice Number</small>
+                <div>{{ invoice.invoice_number|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Invoice Type</small>
+                <div>{{ invoice.get_invoice_type_display }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Invoice Date</small>
+                <div>{{ invoice.invoice_date|date:"d M Y"|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Supplier Name</small>
+                <div>{{ invoice.supplier_name|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Supplier GSTIN</small>
+                <div>{{ invoice.supplier_gstin|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Buyer Name</small>
+                <div>{{ invoice.buyer_name|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Buyer GSTIN</small>
+                <div>{{ invoice.buyer_gstin|default:"—" }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Taxable Amount</small>
+                <div>₹{{ invoice.taxable_amount|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">CGST</small>
+                <div>₹{{ invoice.cgst_amount|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">SGST</small>
+                <div>₹{{ invoice.sgst_amount|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">IGST</small>
+                <div>₹{{ invoice.igst_amount|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Total Invoice Tax</small>
+                <div>₹{{ invoice.total_tax|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Other Charges</small>
+                <div>₹{{ invoice.other_charges|floatformat:2 }}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Grand Total</small>
+                <h5>₹{{ invoice.total_amount|floatformat:2 }}</h5>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Status</small>
+                <div>{{ invoice.get_status_display }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5>Line Items</h5>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Description</th>
+                        <th>HSN/SAC</th>
+                        <th>Quantity</th>
+                        <th>Rate</th>
+                        <th>Taxable Amount</th>
+                        <th>Tax Rate</th>
+                        <th>Tax Amount</th>
+                        <th>Line Total</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in invoice.line_items.all %}
+                        <tr>
+                            <td>{{ item.description|default:"—" }}</td>
+                            <td>{{ item.hsn_sac_code|default:"—" }}</td>
+                            <td>{{ item.quantity|floatformat:2 }}</td>
+                            <td>₹{{ item.rate|floatformat:2 }}</td>
+                            <td>₹{{ item.taxable_amount|floatformat:2 }}</td>
+                            <td>{{ item.tax_rate|floatformat:2 }}%</td>
+                            <td>₹{{ item.tax_amount|floatformat:2 }}</td>
+                            <td>₹{{ item.total_amount|floatformat:2 }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                No line items were extracted from this invoice.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if invoice.source_file %}
+            <a
+                href="{{ invoice.source_file.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-outline-primary"
+            >
+                Open Original Invoice
+            </a>
+        {% endif %}
+
+        <a href="{% url 'invoice_list' %}" class="btn btn-outline-secondary ms-2">
+            Back to Invoices
+        </a>
+    </div>
+</div>
+{% endblock %}

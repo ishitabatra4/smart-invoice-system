@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Invoices | Smart Invoice{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>Invoices</h1>
+        <p>Manage your uploaded invoices and bills.</p>
+    </div>
+
+    <a class="btn btn-primary" href="{% url 'invoice_upload' %}">
+        + Upload Invoice
+    </a>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card mt-4">
+    <div class="card-body">
+        {% if invoices %}
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Invoice Number</th>
+                            <th>Type</th>
+                            <th>Supplier</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Validation</th>
+                            <th>Details</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for invoice in invoices %}
+                            <tr>
+                                <td>
+                                    <strong>
+                                        {{ invoice.invoice_number|default:"—" }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ invoice.get_invoice_type_display }}
+                                </td>
+
+                                <td>
+                                    {{ invoice.supplier_name|default:"—" }}
+                                </td>
+
+                                <td>
+                                    {{ invoice.invoice_date|date:"d M Y"|default:"—" }}
+                                </td>
+
+                                <td>
+                                    ₹{{ invoice.total_amount|floatformat:2 }}
+                                </td>
+
+                                <td>
+                                    {% if invoice.status == "review" %}
+                                        <span class="badge bg-warning text-dark">
+                                            Needs Review
+                                        </span>
+                                    {% elif invoice.status == "verified" %}
+                                        <span class="badge bg-success">
+                                            Verified
+                                        </span>
+                                    {% elif invoice.status == "paid" %}
+                                        <span class="badge bg-primary">
+                                            Paid
+                                        </span>
+                                    {% elif invoice.status == "cancelled" %}
+                                        <span class="badge bg-secondary">
+                                            Cancelled
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-light text-dark">
+                                            {{ invoice.get_status_display }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if invoice.validation_errors %}
+                                        <span class="badge bg-danger">
+                                            {{ invoice.validation_errors|length }} issue(s)
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            No issues
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <a
+                                        class="btn btn-sm btn-outline-primary"
+                                        href="{% url 'invoice_detail' invoice.pk %}"
+                                    >
+                                        View
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <form
+                                        method="post"
+                                        action="{% url 'invoice_delete' invoice.pk %}"
+                                        onsubmit="return confirm('Are you sure you want to permanently delete this invoice? This action cannot be undone.');"
+                                    >
+                                        {% csrf_token %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-sm btn-danger"
+                                        >
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <h5>No invoices yet</h5>
+
+                <p>Upload your first invoice to get started.</p>
+
+                <a
+                    class="btn btn-primary"
+                    href="{% url 'invoice_upload' %}"
+                >
+                    Upload your first invoice
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
