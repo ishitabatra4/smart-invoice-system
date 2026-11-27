@@ -1,0 +1,2 @@
+invoice_number,payment_date,amount,payment_mode,reference_id,notes
+PINE-P-2026-002,2026-10-01,12400.01,Bank Transfer,NEGATIVE-OVERPAY-001,Negative test only: exceeds remaining balance by INR 0.01; do not record.

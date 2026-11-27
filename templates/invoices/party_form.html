@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} | Smart Invoice{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ page_title }}</h1>
+        <p>Maintain the contact and tax details used for your party directory.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{% if party %}{% url 'party_detail' party.pk %}{% else %}{% url 'party_list' %}{% endif %}">Cancel</a>
+</div>
+
+<div class="card mt-4">
+    <div class="card-body p-4">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+                {% for field in form %}
+                    <div class="col-md-{% if field.name == 'address_line' %}12{% else %}6{% endif %}">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="text-danger"> *</span>{% endif %}</label>
+                        {{ field }}
+                        {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                        {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                    </div>
+                {% endfor %}
+                <div class="col-12 d-flex flex-wrap gap-2 pt-2">
+                    <button class="btn btn-primary" type="submit">{{ submit_label }}</button>
+                    <a class="btn btn-outline-secondary" href="{% if party %}{% url 'party_detail' party.pk %}{% else %}{% url 'party_list' %}{% endif %}">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Overview | Smart Invoice{% endblock %}
+{% block content %}
+
+<div class="analytics-header">
+    <div class="analytics-title-group">
+        <p class="eyebrow mb-2">FINANCIAL OVERVIEW</p>
+        <h1>Business overview</h1>
+        <p class="analytics-period-label">{{ start_date|date:"d M Y" }} <span aria-hidden="true">—</span> {{ end_date|date:"d M Y" }}</p>
+    </div>
+    <form method="get" class="analytics-filter">
+        <label for="period" class="form-label">Reporting period</label>
+        <select id="period" name="period" class="form-select">
+            <option value="this_month" {% if selected_period == "this_month" %}selected{% endif %}>This Month</option>
+            <option value="last_month" {% if selected_period == "last_month" %}selected{% endif %}>Last Month</option>
+            <option value="last_3_months" {% if selected_period == "last_3_months" %}selected{% endif %}>Last 3 Months</option>
+            <option value="last_6_months" {% if selected_period == "last_6_months" %}selected{% endif %}>Last 6 Months</option>
+            <option value="financial_year" {% if selected_period == "financial_year" %}selected{% endif %}>This Financial Year</option>
+            <option value="custom" {% if selected_period == "custom" %}selected{% endif %}>Custom Date Range</option>
+        </select>
+        <div id="custom-range" class="custom-range-fields">
+            <input type="hidden" id="report-dates-edited" name="dates_edited" value="0"><input type="date" id="report-start-date" name="start_date" class="form-control" aria-label="Start date" value="{{ filter_start_date }}">
+            <span aria-hidden="true">to</span>
+            <input type="date" id="report-end-date" name="end_date" class="form-control" aria-label="End date" value="{{ filter_end_date }}">
+            <button class="btn btn-dark" type="submit">Apply</button>
+        </div>
+        <noscript>Select Custom Date Range before editing dates.</noscript>
+    </form>
+</div>
+{% if custom_error %}<div class="alert alert-warning mt-3">{{ custom_error }}</div>{% endif %}
+
+<div class="workspace-actions" aria-label="Quick actions"><a class="btn btn-primary" href="{% url 'invoice_create' 'sales' %}">Create invoice</a><a class="btn btn-outline-secondary" href="{% url 'expense_add' %}">Add expense</a><a class="btn btn-outline-secondary" href="{% url 'expense_receipt_upload' %}">Upload receipt</a><a class="btn btn-outline-secondary" href="{% url 'tax_preparation' %}">Prepare tax report</a></div>
+<section class="analytics-kpis row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3" aria-label="Business overview metrics"><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Total Sales</span><span class="kpi-icon kpi-icon-green" aria-hidden="true">↗</span></div><strong class="kpi-value">₹{{ totals.sales|floatformat:2 }}</strong><small class="kpi-description">Confirmed invoices</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Total Expenses</span><span class="kpi-icon kpi-icon-sand" aria-hidden="true">−</span></div><strong class="kpi-value">₹{{ totals.expenses|floatformat:2 }}</strong><small class="kpi-description">Confirmed expense bills</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Accounts Receivable</span><span class="kpi-icon kpi-icon-green" aria-hidden="true">↘</span></div><strong class="kpi-value">₹{{ totals.receivable|floatformat:2 }}</strong><small class="kpi-description">Open customer balance · invoices dated/adjusted in period</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Purchase &amp; expense payables</span><span class="kpi-icon kpi-icon-sand" aria-hidden="true">↗</span></div><strong class="kpi-value">₹{{ totals.payable|floatformat:2 }}</strong><small class="kpi-description">Invoices dated/adjusted in period · balance as of period end</small></article></div></section>
+<p class="form-text mt-2">Invoice values and open balances in the selected period. Cash receipts and payments are shown separately below.</p>
+{% if workspace_alerts %}<section class="alert alert-warning"><h2 class="h6">Needs attention</h2><ul class="mb-0">{% for alert in workspace_alerts %}<li><a href="{% url 'security_alert_detail' alert.pk %}">{{ alert.rule_id }} · {{ alert.status }}</a> — {{ alert.summary }}</li>{% endfor %}</ul></section>{% endif %}
+<div class="workspace-recent">
+<section class="card card-body"><div class="workspace-panel-heading"><h2>Recent invoices</h2><a href="{% url 'invoice_list' %}">View all</a></div><p class="form-text">Latest created documents across all dates, including drafts.</p><div class="table-responsive"><table class="table"><thead><tr><th>Invoice / date</th><th>Status</th><th class="text-end">Saved total</th></tr></thead><tbody>{% for item in recent_invoices %}<tr><td><a href="{% url 'invoice_detail' item.pk %}">{{ item.invoice_number|default:'Draft' }}</a><small class="d-block">{% include 'invoices/_invoice_date.html' with invoice=item %}</small></td><td><span class="badge bg-secondary">{{ item.get_status_display }}</span></td><td class="amount">₹{{ item.total_amount|floatformat:2 }}</td></tr>{% empty %}<tr><td colspan="3">No invoices yet. Start with a draft.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="card card-body"><div class="workspace-panel-heading"><h2>Recent expenses</h2><a href="{% url 'expense_list' %}">View register</a></div><p class="form-text">Latest created expense bills across all dates.</p><div class="table-responsive"><table class="table"><thead><tr><th>Bill / supplier</th><th>Status</th><th class="text-end">Saved total</th></tr></thead><tbody>{% for item in recent_expenses %}<tr><td><a href="{% url 'expense_detail' item.pk %}">{{ item.invoice_number|default:'Expense' }}</a><small class="d-block">{{ item.supplier_name }}</small></td><td><span class="badge bg-secondary">{{ item.get_status_display }}</span></td><td class="amount">₹{{ item.total_amount|floatformat:2 }}</td></tr>{% empty %}<tr><td colspan="3">No expense bills yet.</td></tr>{% endfor %}</tbody></table></div></section>
+</div>
+
+
+<section class="analytics-section">
+    <div class="analytics-section-heading"><h2>Financial performance</h2></div>
+    <div class="analytics-primary-grid row g-3">
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Sales vs Purchases</h3><p>Monthly invoice totals</p></div></div><div class="chart-wrap"><canvas id="salesPurchasesChart" aria-label="Monthly sales and purchases bar chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card cash-flow-card card h-100"><div class="chart-heading"><div><h3>Cash Inflow vs Outflow</h3><p>Monthly receipts and payments</p></div></div><div class="chart-wrap"><canvas id="cashFlowChart" aria-label="Grouped monthly cash inflow and outflow bar chart"></canvas></div></article></div>
+    </div>
+</section>
+
+<details class="workspace-secondary"><summary>Cash, purchases &amp; party insights <small>Receipts, payments and supporting charts</small></summary><section class="analytics-kpis row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3" aria-label="Cash and purchase details"><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Total Purchases</span><span class="kpi-icon kpi-icon-sand" aria-hidden="true">↙</span></div><strong class="kpi-value">₹{{ totals.purchases|floatformat:2 }}</strong><small class="kpi-description">Confirmed invoices</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Net Cash Flow</span><span class="kpi-icon {% if net_cash_flow < 0 %}kpi-icon-red{% else %}kpi-icon-green{% endif %}" aria-hidden="true">₹</span></div><strong class="kpi-value {% if net_cash_flow < 0 %}text-danger{% else %}text-success{% endif %}">₹{{ net_cash_flow|floatformat:2 }}</strong><small class="kpi-description">Received less paid</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Payments Received</span><span class="kpi-icon kpi-icon-green" aria-hidden="true">＋</span></div><strong class="kpi-value">₹{{ totals.payments_received|floatformat:2 }}</strong><small class="kpi-description">Cash inflow</small></article></div><div class="col"><article class="analytics-kpi card h-100"><div class="kpi-top"><span class="kpi-label">Payments Made</span><span class="kpi-icon kpi-icon-sand" aria-hidden="true">−</span></div><strong class="kpi-value">₹{{ totals.payments_made|floatformat:2 }}</strong><small class="kpi-description">Cash outflow</small></article></div></section><section class="analytics-section">
+    <div class="analytics-section-heading"><h2>Invoice and party insights</h2></div>
+    <div class="analytics-secondary-grid row g-3">
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Invoice Status</h3><p>{{ status_total }} invoices</p></div></div><div class="chart-wrap chart-wrap-donut"><canvas id="invoiceStatusChart" aria-label="Invoice status distribution doughnut chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Expense Trend</h3><p>Monthly expense bills</p></div></div><div class="chart-wrap"><canvas id="expensesChart" aria-label="Monthly expenses bar chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Receivables vs Payables</h3><p>Invoices dated or adjusted in period, as of period end</p></div></div><div class="chart-wrap"><canvas id="outstandingChart" aria-label="Grouped receivables and payables bar chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Top Customers</h3><p>Sales by customer</p></div></div><div class="chart-wrap chart-wrap-tall"><canvas id="customersChart" aria-label="Top customers horizontal bar chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Top Suppliers</h3><p>Purchases by supplier</p></div></div><div class="chart-wrap chart-wrap-tall"><canvas id="suppliersChart" aria-label="Top suppliers horizontal bar chart"></canvas></div></article></div>
+    </div>
+</section>
+
+</details>
+<details class="workspace-secondary"><summary>GST &amp; treatment details <small>Estimates and declared classifications, not statutory liabilities</small></summary><section class="analytics-section">
+    <div class="analytics-section-heading"><div><h2>GST analytics</h2><p>Calculated invoice tax; not a filed return or an ITC eligibility decision.</p></div></div>
+    <div class="gst-summary-row row row-cols-2 row-cols-xl-5 g-3">
+        <div class="col"><div class="gst-summary card h-100"><span>Sales before GST</span><strong>₹{{ totals.taxable_sales|floatformat:2 }}</strong></div></div>
+        <div class="col"><div class="gst-summary card h-100"><span>Purchases before GST</span><strong>₹{{ totals.taxable_purchases|floatformat:2 }}</strong></div></div>
+        <div class="col"><div class="gst-summary card h-100"><span>Output GST</span><strong>₹{{ totals.output_gst|floatformat:2 }}</strong></div></div>
+        <div class="col"><div class="gst-summary card h-100"><span>Input GST</span><strong>₹{{ totals.input_gst|floatformat:2 }}</strong><small>ITC eligibility not assessed</small></div></div>
+        <div class="col"><div class="gst-summary card h-100"><span>User-supplied GST extract tax</span><strong>₹{{ imported_gstr2b_tax|floatformat:2 }}</strong><small>Latest uploaded run per month; not independently authenticated</small></div></div>
+    </div>
+    <div class="analytics-gst-grid row g-3 mt-1">
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>Monthly GST Trend</h3><p>Output and input GST</p></div></div><div class="chart-wrap"><canvas id="gstTrendChart" aria-label="Monthly calculated output and input GST line chart"></canvas></div></article></div>
+        <div class="col-12 col-xl-6"><article class="analytics-chart-card card h-100"><div class="chart-heading"><div><h3>CGST, SGST and IGST</h3><p>Invoice tax components</p></div></div><div class="chart-wrap chart-wrap-donut"><canvas id="gstBreakdownChart" aria-label="Input and output GST component doughnut chart"></canvas></div></article></div>
+        <div class="col-12"><article class="analytics-chart-card card"><div class="chart-heading"><div><h3>Value before GST</h3><p>Monthly sales and purchases before tax</p></div></div><div class="chart-wrap"><canvas id="taxableTrendChart" aria-label="Monthly taxable sales and purchases chart"></canvas></div></article></div>
+    </div>
+</section>
+<section class="card mt-4"><div class="card-body"><h2 class="h5">Value before GST by declared treatment</h2><p class="text-muted">Historical or unclassified values are shown separately. This is not an ITC eligibility decision.</p><div class="table-responsive"><table class="table"><thead><tr><th>Document type</th><th>Taxable (including 0%)</th><th>Exempt</th><th>Nil-rated</th><th>Non-GST</th><th>Unclassified</th></tr></thead><tbody>{% for kind, values in treatment_summary.items %}<tr><td>{{ kind }}</td><td class="amount">₹{{ values.taxable|floatformat:2 }}</td><td class="amount">₹{{ values.exempt|floatformat:2 }}</td><td class="amount">₹{{ values.nil_rated|floatformat:2 }}</td><td class="amount">₹{{ values.non_gst|floatformat:2 }}</td><td class="amount">₹{{ values.unclassified|floatformat:2 }}</td></tr>{% endfor %}</tbody></table></div></div></section>
+</details>
+{{ chart_data|json_script:"analytics-chart-data" }}
+{% endblock %}
+{% block page_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/analytics-dashboard.js' %}" defer></script>
+{% endblock %}

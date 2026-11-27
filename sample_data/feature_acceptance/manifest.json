@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "fictional": true,
+  "no_database_import": true,
+  "currency": "INR",
+  "numbers": "Sales/quotation/proforma/note numbers and database IDs are assigned by the app. reference_number identifies upload documents only.",
+  "files": {
+    "manual_entry/invoice_cases.json": {
+      "sha256": "390809cb694a8385ea592e7dab72d762511319af332aa2b8558ddf5cbfb9e0a4",
+      "bytes": 52142,
+      "usage": "Reference only; not an application import format."
+    },
+    "manual_entry/parties.csv": {
+      "sha256": "ddfeb191f945068019a4abd411f03dbf2e7157be53e95d91a7b14df9b7337316",
+      "bytes": 597,
+      "usage": "Manual party/profile reference; fictional .test email addresses only."
+    },
+    "expected/invoice_values.csv": {
+      "sha256": "713bf3f166aa8941ec313098dc942140bfd8e6145d43d28c37151320ea1db5b0",
+      "bytes": 975,
+      "usage": "Expected saved GST engine values; independent cases, not a combined ledger."
+    },
+    "documents/EXCLUSIVE-18.pdf": {
+      "sha256": "c87d75403ca2df9d1bac3bf86240015ad41f4a50323f2a25f0abe0f4359e87a4",
+      "bytes": 2034,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/INCLUSIVE-ROUNDING.pdf": {
+      "sha256": "e2ec2fd26420b81530769958a8156140be3c9c985e5079df1ffd00ae42a7f4ff",
+      "bytes": 2043,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/INTERSTATE-18.pdf": {
+      "sha256": "4fb355fc2625a8d6b087c39d532222b77a4d87913f92a3669f49ff08a20523c5",
+      "bytes": 2041,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/MIXED-RATES.pdf": {
+      "sha256": "417478997f97957bc6c28e1212adf6cb8f791bf25cc3edfc4d720a269a15374e",
+      "bytes": 2109,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/DISCOUNTS.pdf": {
+      "sha256": "9db46f2b13bd1334856fdc4fbe009753ff4c41d081907c19cc0073dae0cc7008",
+      "bytes": 2037,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/CLASSIFICATIONS.pdf": {
+      "sha256": "c4e865d8b4f45da852586a39658f5c15077e00f03e07e35b5fc1b0e364c69df0",
+      "bytes": 2048,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/HISTORICAL-PAYMENT.pdf": {
+      "sha256": "c7793febad6be8cf56e156597ca1593b3cf4f97f93198fd8189c011639efd35d",
+      "bytes": 2043,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/BOTH-SALE.pdf": {
+      "sha256": "1b09b08754e1052b18583049610953d2aad7a8610117716009d2b6423441da32",
+      "bytes": 2022,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/BOTH-PURCHASE.pdf": {
+      "sha256": "f682149def1095f491192783a2d0531adde3560d33fa0d83a108f8f7eea1185a",
+      "bytes": 2030,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/PURCHASE-18.pdf": {
+      "sha256": "41e563aa084e1f266bbe5d1ca1c210005ba44347ba591f5c9bdd2f03c43a1f49",
+      "bytes": 2022,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/MULTIPAGE.pdf": {
+      "sha256": "13cf99f723b25d391d9e21a34c63fbda8d7e33f4831d64729c26437da1fd255a",
+      "bytes": 3201,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "documents/ROUND-OFF.pdf": {
+      "sha256": "6963c1e45da374c537bc8ac71df656405f4ec9239e74475f4c61c547d1008cc7",
+      "bytes": 2021,
+      "usage": "Upload as matching invoice type, review fields/lines; alternative to manual-entry case, not an additional transaction."
+    },
+    "negative/missing_number.pdf": {
+      "sha256": "5b9965349b1aac621c18c91441c0acc5daea98cb3abd9d5676b63b191b9a202c",
+      "bytes": 1986,
+      "usage": "Uploadable negative fixture: missing invoice number; mandatory review."
+    },
+    "negative/ambiguous_date.pdf": {
+      "sha256": "610d4576d9f074583d6f66700c888c03c0fbe709e34e59a2216743457d1ed087",
+      "bytes": 2027,
+      "usage": "Uploadable negative fixture: ambiguous day/month; do not silently choose."
+    },
+    "negative/exact_duplicate.pdf": {
+      "sha256": "c87d75403ca2df9d1bac3bf86240015ad41f4a50323f2a25f0abe0f4359e87a4",
+      "bytes": 2034,
+      "usage": "Upload after EXCLUSIVE-18 original; exact SHA-256 duplicate."
+    },
+    "negative/corrupt.pdf": {
+      "sha256": "4bf172bdc1eed57a57339d37fb6c5c2153c7850b0cbd56c8a831d0f14e6e542c",
+      "bytes": 46,
+      "usage": "Intentionally invalid; rejection expected, not an invoice."
+    },
+    "negative/corrupt.jpg": {
+      "sha256": "62d3008ee25de515501f80b6501c166e2ae7bb8b5891b26aec6eb69b712f234a",
+      "bytes": 45,
+      "usage": "Intentionally invalid; rejection expected."
+    },
+    "negative/validation_and_rendering.json": {
+      "sha256": "be114c5f6ad9597c8ea95d70ba45beceeb7c23f7314d880af56d1eeb6315f763",
+      "bytes": 1165,
+      "usage": "Reference only; not an application import format."
+    },
+    "ocr/invoice.png": {
+      "sha256": "d591d6b7e2f09e217f4d66d5b10ac09217cd161c763c58d32988966fe3d4006f",
+      "bytes": 111448,
+      "usage": "Upload alternative of FEATURE-RECEIPT-OCR; compare with ground_truth.json. Never count alternatives as extra expenses."
+    },
+    "ocr/invoice.jpg": {
+      "sha256": "7e4ce420defbd2a1706552e75e4120568be42ac388ada6d05a939056b21f5fc9",
+      "bytes": 179799,
+      "usage": "Upload alternative of FEATURE-RECEIPT-OCR; compare with ground_truth.json. Never count alternatives as extra expenses."
+    },
+    "ocr/rotated.png": {
+      "sha256": "7809b4a93041dfe8a675c1d17aa82ca083124173aae1d949b5bbe41b6f25ffdf",
+      "bytes": 141493,
+      "usage": "Upload alternative of FEATURE-RECEIPT-OCR; compare with ground_truth.json. Never count alternatives as extra expenses."
+    },
+    "ocr/low_quality.jpg": {
+      "sha256": "01d65d5b46a3ea48b7c85d99584715390fa0cf1ba291dd4e3bd779dce2c37ebc",
+      "bytes": 11298,
+      "usage": "Upload alternative of FEATURE-RECEIPT-OCR; compare with ground_truth.json. Never count alternatives as extra expenses."
+    },
+    "ocr/scanned.pdf": {
+      "sha256": "90604b8dd8899a4cf3c33d7076064e810bb303cf8f207c535b967921d69464b1",
+      "bytes": 108119,
+      "usage": "Image-only scanned PDF; OCR required, not embedded text."
+    },
+    "ocr/multipage_scanned.pdf": {
+      "sha256": "46bea449a6a9ad7e04c70533b45b14142ef8dae10c5ca98ae908a2855daa5619",
+      "bytes": 121099,
+      "usage": "Two image-only pages of one invoice; do not add the header total twice."
+    },
+    "ocr/mixed_text_scan.pdf": {
+      "sha256": "8ecf6e154514238aa0033b2f87468eb4063e59d0f9de2cddfaf935c617e11601",
+      "bytes": 109182,
+      "usage": "Two distinct source invoice references deliberately mixed: require conflict review, never merge automatically."
+    },
+    "ocr/ground_truth.json": {
+      "sha256": "991e7e14407ef98b226634a7eb7620ed6ba17f487092954610181bb7db029e93",
+      "bytes": 819,
+      "usage": "Reference only; not an application import format."
+    },
+    "commercial/quotations_proformas.json": {
+      "sha256": "dad76f43e7b6f7da2ce450300da68aadace244e2311e8fc33ce06fc929627540",
+      "bytes": 1499,
+      "usage": "Reference only; not an application import format."
+    },
+    "adjustments/credit_debit_workflows.json": {
+      "sha256": "521c72209290a1eb37991f379042daa14c3b715201ba26158b4de2aa0211ada4",
+      "bytes": 1790,
+      "usage": "Reference only; not an application import format."
+    },
+    "expenses/recurrence_itc_and_attribution.json": {
+      "sha256": "521e8b15cb68f85005ba20889a07f05762fab97f63f9b22ed3a8396916f41f51",
+      "bytes": 1696,
+      "usage": "Reference only; not an application import format."
+    },
+    "payments/reporting_regressions.json": {
+      "sha256": "9c27b27215e3621100511e7fc21f7a2045207793dae7f51e02c678ec534faa5a",
+      "bytes": 1519,
+      "usage": "Reference only; not an application import format."
+    },
+    "tax/reconciliation_exact.json": {
+      "sha256": "5603346200069227f7376bd99e4d21d7ba06d3c47d5a596da96113efb5653c19",
+      "bytes": 273,
+      "usage": "Uploadable reconciliation JSON; period 2026-11; use only for the matching PURCHASE-18 uploaded supplier number."
+    },
+    "tax/reconciliation_exact.xlsx": {
+      "sha256": "843d6ff8e0e34d1300474fb8036fd42d4651108fea40c8f3deb643812016448c",
+      "bytes": 5007,
+      "usage": "Same rows as JSON: choose one format per reconciliation run, not both."
+    },
+    "tax/preparation_inputs.json": {
+      "sha256": "6dc141c098d4cd527fe3bb1c9d77f21342b8bee0d792b8a9a879c45b857ee215",
+      "bytes": 1819,
+      "usage": "Reference only; not an application import format."
+    },
+    "security/local_manual_scenarios.json": {
+      "sha256": "f09220ed9065ed794be74a8874a3fcba29c9b3403c0b6f5e4d2efd5a7ec9d005",
+      "bytes": 1695,
+      "usage": "Reference only; not an application import format."
+    },
+    "ui/pagination_60_manual_references.csv": {
+      "sha256": "72ad7bf5d7615e278e3af968374031d6483a537d1a3bf3a9d53b1386f6aead67",
+      "bytes": 5190,
+      "usage": "Manual-entry references only, not a CSV importer. Expected pages 25/25/10 for a clean isolated dataset of these 60 invoices."
+    },
+    "ui/checklist.json": {
+      "sha256": "38468d1df00be6a10999a8e172e66a9ab3cec47fa4c04fc4d975c17853aa597b",
+      "bytes": 634,
+      "usage": "Reference only; not an application import format."
+    },
+    "feature_matrix.csv": {
+      "sha256": "4a3d7248324ca5aaeadca36c505f39c1b594728fa79b2db52dc7c8a3ab6f1301",
+      "bytes": 1209,
+      "usage": "Feature-to-fixture index; reference only."
+    },
+    "README.md": {
+      "sha256": "96e9dc089d8aa3976c81019a28207781537017a3a707835db6bac2a7b17004eb",
+      "bytes": 6074,
+      "usage": "Start here: setup order, per-feature instructions, known bugs and safe-use boundaries."
+    }
+  }
+}

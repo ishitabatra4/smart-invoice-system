@@ -1,0 +1,11 @@
+feature,data,expected,known_bug
+GST/manual entry,manual_entry/invoice_cases.json,expected/invoice_values.csv,no
+PDF/upload/extraction,documents/; ocr/,ocr/ground_truth.json; explicit review,OCR accuracy varies
+Quotes/proformas,commercial/quotations_proformas.json,No accounting until supported conversion,no
+Credit/debit notes,adjustments/credit_debit_workflows.json,944 -> 1062 -> 1298 net after specified steps,no
+Expenses/recurring/ITC,expenses/recurrence_itc_and_attribution.json,"1180.03 inclusive, no duplicate periods/attribution costs",no
+Historical reporting,payments/reporting_regressions.json,"October outstanding 1180, November 0",paid status shortcut
+Mixed-role party ledger,payments/reporting_regressions.json,100 receivable / 80 payable; net debit-credit 20,combined running balance
+Reconciliation/tax preparation,tax/,Book input/output components 90 CGST + 90 SGST each for exact two-case setup,No statutory verification claimed
+Security/session/tenant access,security/local_manual_scenarios.json,Scoped denial/review/revocation; no raw tokens,date underflow negative case
+UI/pagination/accessibility,ui/,25/25/10 for 60 references; five viewport widths,preset dates may be ignored

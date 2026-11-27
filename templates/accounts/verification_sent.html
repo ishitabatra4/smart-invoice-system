@@ -1,0 +1,9 @@
+{% extends "accounts/auth_base.html" %}
+{% block title %}Check your email | Smart Invoice{% endblock %}
+{% block auth_body %}
+<span class="auth-state-icon" aria-hidden="true">✓</span>
+<h1 id="auth-heading">Check your email</h1>
+<p class="auth-subtitle" role="status">If an eligible account exists, we’ll attempt to send your secure link. Check your inbox and spam folder. For your privacy, this page does not confirm whether an email was sent.</p>
+<p class="auth-note">Email delivery may be delayed or temporarily unavailable. If it doesn’t arrive, wait a few minutes and <a href="{% url 'resend_verification' %}">try again</a>.</p>
+<a class="auth-primary" href="{% url 'login' %}">Back to sign in</a>
+{% endblock %}

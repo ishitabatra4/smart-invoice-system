@@ -1,0 +1,6 @@
+invoice_number,payment_date,amount,payment_mode,reference_id,notes
+SALE-AC-2026-001,2026-06-25,19500.00,Bank Transfer,SAMP-RCPT-001B,Final receipt
+SALE-NV-2026-003,2026-08-18,20160.00,Bank Transfer,SAMP-RCPT-003,Full receipt
+SALE-CD-2026-005,2026-10-25,16400.00,Bank Transfer,SAMP-RCPT-005,Full receipt
+PINE-P-2026-001,2026-06-20,11800.00,Bank Transfer,SAMP-PAY-001,Full supplier payment
+METRO-P-2026-001,2026-08-01,4290.00,Cheque,SAMP-PAY-METRO,Full supplier payment

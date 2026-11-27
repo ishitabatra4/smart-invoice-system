@@ -6,7 +6,7 @@
 {% block content %}
 <section class="welcome-section">
     <p class="eyebrow">OVERVIEW</p>
-    <h1>Good to see you, {{ user.username }}.</h1>
+    <h1>Good to see you, {{ user.business_profile.business_name|default:user.email|default:"Account" }}.</h1>
     <p class="muted">Your business activity, documents and financial overview—all in one place.</p>
 </section>
 

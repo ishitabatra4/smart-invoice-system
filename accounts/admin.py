@@ -1,10 +1,12 @@
+from config.admin_security import BusinessScopedAdmin
 
 from django.contrib import admin
 from .models import BusinessProfile
 
 
 @admin.register(BusinessProfile)
-class BusinessProfileAdmin(admin.ModelAdmin):
+class BusinessProfileAdmin(BusinessScopedAdmin):
+    owner_lookup = "user"
     list_display = (
         "business_name",
         "user",

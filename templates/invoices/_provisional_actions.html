@@ -1,0 +1,4 @@
+<div class="d-flex flex-wrap gap-2 my-3">
+{% if can_change_invoice_type %}<a class="btn btn-outline-primary" href="{% url 'invoice_change_type' invoice.pk %}">Change Invoice Type</a>{% endif %}
+{% if can_restore_invoice %}<a class="btn btn-outline-primary" href="{% url 'invoice_restore' invoice.pk %}">Restore Invoice</a>{% endif %}
+</div>

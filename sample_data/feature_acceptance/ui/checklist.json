@@ -1,0 +1,22 @@
+{
+  "widths": [
+    375,
+    430,
+    768,
+    1280,
+    1440
+  ],
+  "checks": [
+    "Keyboard sidebar and current page",
+    "Long party names and row scrolling",
+    "Search/status/type filters with pagination",
+    "One feedback message",
+    "Repeated submit blocked without losing action values",
+    "Custom reporting period",
+    "Draft/cancelled PDF watermark",
+    "60-line PDF pagination",
+    "Saved financial components match CSV/JSON",
+    "No browser acceptance claim until actually tested"
+  ],
+  "browser": "Existing Safari only if remote automation is enabled by the user; do not change preferences automatically."
+}

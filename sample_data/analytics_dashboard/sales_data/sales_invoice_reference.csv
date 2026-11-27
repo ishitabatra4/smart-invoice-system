@@ -1,0 +1,6 @@
+invoice_number,invoice_date,buyer,taxable,invoice_total
+SALE-AC-2026-001,10/06/2026,Acme Corner Stores,25000.00,29500.00
+SALE-AC-2026-002,12/07/2026,Acme Corner Stores,10000.00,10500.00
+SALE-NV-2026-003,08/08/2026,Nova Home Retail,18000.00,20160.00
+SALE-NV-2026-004,05/09/2026,Nova Home Retail,5000.00,5900.00
+SALE-CD-2026-005,15/10/2026,Cedar Grove Market,12500.00,16400.00

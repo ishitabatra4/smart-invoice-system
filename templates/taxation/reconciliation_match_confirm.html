@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Confirm Manual Match | Smart Invoice{% endblock %}
+{% block content %}
+<p class="small text-muted">Uploaded GST extracts are user-supplied and are not independently authenticated. Matching does not establish ITC eligibility. Tax estimates are working calculations, not final statutory determinations; the application does not file returns.</p>
+<div class="page-header">
+    <div>
+        <h1>Confirm Manual Match</h1>
+        <p>These invoice numbers differ. Review the details before confirming.</p>
+    </div>
+    <a href="{% url 'reconciliation_run' run.pk %}" class="btn btn-outline-secondary">Cancel</a>
+</div>
+
+<div class="alert alert-warning mt-4">
+    <strong>Invoice number warning:</strong>
+    GSTR-2B invoice <strong>{{ record.invoice_number }}</strong> will be linked to purchase invoice <strong>{{ invoice.invoice_number }}</strong>.
+    This will be recorded as a manual match and may remain a mismatch.
+</div>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <h5>Compare record values</h5>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light"><tr><th>Field</th><th>GSTR-2B</th><th>Purchase invoice</th><th>Difference</th></tr></thead>
+                <tbody>
+                    {% for label, gstr_value, invoice_value, difference in comparison_rows %}
+                    <tr><th>{{ label }}</th><td>{{ gstr_value }}</td><td>{{ invoice_value }}</td><td>{{ difference|default:"—" }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <form method="post" action="{% url 'reconciliation_match' run.pk record.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="invoice_id" value="{{ invoice.pk }}">
+            <input type="hidden" name="confirm_number_difference" value="1">
+            <input type="hidden" name="confirmation_token" value="{{ confirmation_token }}">
+            <button type="submit" class="btn btn-warning">Confirm Manual Match</button>
+            <a href="{% url 'reconciliation_run' run.pk %}" class="btn btn-outline-secondary ms-2">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

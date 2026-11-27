@@ -1,0 +1,12 @@
+[
+  {
+    "supplier_gstin": "27PQRST5678L1Z0",
+    "invoice_number": "FEATURE-PURCHASE-18",
+    "invoice_date": "2026-11-01",
+    "taxable_value": "1000.00",
+    "cgst_amount": "90.00",
+    "sgst_amount": "90.00",
+    "igst_amount": "0.00",
+    "total_tax": "180.00"
+  }
+]

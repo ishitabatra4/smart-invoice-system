@@ -1,0 +1,19 @@
+{% extends "accounts/auth_base.html" %}
+{% block title %}{{ heading }} | Smart Invoice{% endblock %}
+{% block auth_body %}
+{% if reset_confirm and not validlink %}
+    <span class="auth-state-icon" aria-hidden="true">!</span>
+    <h1 id="auth-heading">This link has expired</h1>
+    <p class="auth-subtitle">This reset link is invalid or expired. Request a new link to securely reset your password.</p>
+    <a class="auth-primary" href="{% url 'password_reset' %}">Request a new reset link</a>
+{% else %}
+    <h1 id="auth-heading">{{ heading }}</h1>
+    <p class="auth-subtitle">{{ subtitle }}</p>
+    <form method="post" data-auth-form>
+        {% csrf_token %}
+        {% include "accounts/_auth_fields.html" %}
+        <button class="auth-primary" type="submit" data-busy-text="Please wait…">{{ button }}</button>
+    </form>
+{% endif %}
+<p class="auth-back"><a href="{% url 'login' %}"><span aria-hidden="true">← </span>Back to sign in</a></p>
+{% endblock %}

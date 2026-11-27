@@ -6,22 +6,15 @@
 <div class="page-header">
     <div>
         <h1>Invoices</h1>
-        <p>Manage your uploaded invoices and bills.</p>
+        <p>Manage draft, finalized and uploaded invoices.</p>
     </div>
 
-    <a class="btn btn-primary" href="{% url 'invoice_upload' %}">
+    <div class="d-flex flex-wrap gap-2"><a class="btn btn-primary" href="{% url 'invoice_create' 'sales' %}">+ Sales invoice</a><a class="btn btn-outline-primary" href="{% url 'invoice_create' 'purchase' %}">+ Purchase invoice</a><a class="btn btn-outline-secondary" href="{% url 'invoice_batch_history' %}">Upload history</a><a class="btn btn-outline-secondary" href="{% url 'invoice_upload' %}">
         + Upload Invoice
-    </a>
+    </a></div>
 </div>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
-
+<form method="get" class="card card-body mb-3"><div class="row g-3 align-items-end">{% for field in filter_form %}<div class="col-12 col-sm-6 col-xl">{{ field.label_tag }}{{ field }}{% for error in field.errors %}<div class="field-error" role="alert">{{ error }}</div>{% endfor %}</div>{% endfor %}<div class="col-auto"><button class="btn btn-outline-secondary">Filter</button></div><div class="col-auto"><a href="{% url 'invoice_list' %}">Clear</a></div></div></form>
 <div class="card mt-4">
     <div class="card-body">
         {% if invoices %}
@@ -31,7 +24,7 @@
                         <tr>
                             <th>Invoice Number</th>
                             <th>Type</th>
-                            <th>Supplier</th>
+                            <th>Customer / supplier</th>
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -55,19 +48,18 @@
                                 </td>
 
                                 <td>
-                                    {{ invoice.supplier_name|default:"—" }}
+                                    {% if invoice.invoice_type == "sales" %}{{ invoice.buyer_name|default:"—" }}{% else %}{{ invoice.supplier_name|default:"—" }}{% endif %}
                                 </td>
 
                                 <td>
-                                    {{ invoice.invoice_date|date:"d M Y"|default:"—" }}
+                                    {% include 'invoices/_invoice_date.html' %}
+                                </td>
+
+                                <td class="amount">₹{{ invoice.total_amount|floatformat:2 }}
                                 </td>
 
                                 <td>
-                                    ₹{{ invoice.total_amount|floatformat:2 }}
-                                </td>
-
-                                <td>
-                                    {% if invoice.status == "review" %}
+                                    {% if invoice.entry_mode == "manual" %}<span class="badge {% if invoice.document_state == 'draft' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">{{ invoice.get_document_state_display }}</span>{% elif invoice.status == "review" %}
                                         <span class="badge bg-warning text-dark">
                                             Needs Review
                                         </span>
@@ -93,11 +85,11 @@
                                 <td>
                                     {% if invoice.validation_errors %}
                                         <span class="badge bg-danger">
-                                            {{ invoice.validation_errors|length }} issue(s)
+                                            {{ invoice.validation_errors|length }} stored notice(s)
                                         </span>
                                     {% else %}
                                         <span class="badge bg-success">
-                                            No issues
+                                            {% if invoice.status == 'review' %}Review required{% else %}No stored notices{% endif %}
                                         </span>
                                     {% endif %}
                                 </td>
@@ -115,7 +107,7 @@
                                     <form
                                         method="post"
                                         action="{% url 'invoice_delete' invoice.pk %}"
-                                        onsubmit="return confirm('Are you sure you want to permanently delete this invoice? This action cannot be undone.');"
+                                        onsubmit="return confirm('Cancel this invoice? Its record and source file will be retained.');"
                                     >
                                         {% csrf_token %}
 
@@ -123,7 +115,7 @@
                                             type="submit"
                                             class="btn btn-sm btn-danger"
                                         >
-                                            Delete
+                                            Cancel
                                         </button>
                                     </form>
                                 </td>
@@ -134,18 +126,19 @@
             </div>
         {% else %}
             <div class="text-center py-5">
-                <h5>No invoices yet</h5>
+                <h5>No matching invoices</h5>
 
-                <p>Upload your first invoice to get started.</p>
+                <p>Create a draft invoice or adjust your filters.</p>
 
                 <a
                     class="btn btn-primary"
-                    href="{% url 'invoice_upload' %}"
+                    href="{% url 'invoice_create' 'sales' %}"
                 >
-                    Upload your first invoice
+                    Create an invoice
                 </a>
             </div>
         {% endif %}
     </div>
 </div>
+{% include 'components/pagination.html' %}
 {% endblock %}

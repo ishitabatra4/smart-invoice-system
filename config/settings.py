@@ -11,21 +11,66 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from django.core.exceptions import ImproperlyConfigured
+from django.core.management.utils import get_random_secret_key
+from .environment import load_local_env, email_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_local_env(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-04ywa4!xr571*8q=g4eqoung=gsuys+qq@(m%w)jvxj!xrvnds"
+# Local HTTP development is the default; production must opt in explicitly.
+DEBUG = os.environ.get("DEBUG", "true").strip().lower() in {"1", "true", "yes", "on"}
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured("Set SECRET_KEY before starting production.")
+    SECRET_KEY = get_random_secret_key()  # Set a stable environment key to retain dev sessions.
+ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,[::1]" if DEBUG else "").split(",") if h.strip()]
+if not DEBUG and not ALLOWED_HOSTS:
+    raise ImproperlyConfigured("Set explicit ALLOWED_HOSTS before starting production.")
+CSRF_TRUSTED_ORIGINS = [v.strip() for v in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if v.strip()]
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_HTTPONLY = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+def _bounded_seconds(name, default, low, high):
+    try:
+        value = int(os.environ.get(name, str(default)))
+    except ValueError:
+        raise ImproperlyConfigured(f"{name} must be a whole number of seconds.") from None
+    if not low <= value <= high:
+        raise ImproperlyConfigured(f"{name} must be between {low} and {high} seconds.")
+    return value
+
+
+# Server-enforced session lifetime (accounts.session_policy.SessionExpiryMiddleware).
+SESSION_IDLE_TIMEOUT = _bounded_seconds("SESSION_IDLE_TIMEOUT", 30 * 60, 60, 24 * 3600)
+SESSION_ABSOLUTE_TIMEOUT = _bounded_seconds("SESSION_ABSOLUTE_TIMEOUT", 12 * 3600, 300, 30 * 24 * 3600)
+if SESSION_IDLE_TIMEOUT > SESSION_ABSOLUTE_TIMEOUT:
+    raise ImproperlyConfigured("SESSION_IDLE_TIMEOUT cannot exceed SESSION_ABSOLUTE_TIMEOUT.")
+SESSION_ACTIVITY_UPDATE_INTERVAL = _bounded_seconds("SESSION_ACTIVITY_UPDATE_INTERVAL", 60, 0, 600)
+SESSION_WARNING_SECONDS = _bounded_seconds("SESSION_WARNING_SECONDS", 120, 0, 3600)
+# The server-side session row and cookie never outlive the absolute limit.
+SESSION_COOKIE_AGE = SESSION_ABSOLUTE_TIMEOUT
+SESSION_EXPIRE_AT_BROWSER_CLOSE = os.environ.get("SESSION_EXPIRE_AT_BROWSER_CLOSE", "false").strip().lower() in {"1", "true", "yes", "on"}
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = int(os.environ.get("SECURE_HSTS_SECONDS", "31536000" if not DEBUG else "0"))
+SECURE_HSTS_INCLUDE_SUBDOMAINS = os.environ.get("SECURE_HSTS_INCLUDE_SUBDOMAINS", "false").lower() == "true"
+SECURE_HSTS_PRELOAD = os.environ.get("SECURE_HSTS_PRELOAD", "false").lower() == "true"
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "same-origin"
+X_FRAME_OPTIONS = "DENY"
+if os.environ.get("TRUST_PROXY_HTTPS", "false").lower() == "true":
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 # Application definition
@@ -53,7 +98,10 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "audit.middleware.AuditForbiddenResponseMiddleware",
+    "config.middleware.SecurityBoundaryMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "accounts.session_policy.SessionExpiryMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -69,6 +117,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "accounts.session_policy.session_timeout_context",
             ],
         },
     },
@@ -83,7 +132,8 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": os.environ.get("SQLITE_PATH", str(BASE_DIR / "db.sqlite3")),
+        "OPTIONS": {"transaction_mode": "IMMEDIATE", "timeout": 20},
     }
 }
 
@@ -134,6 +184,64 @@ LOGOUT_REDIRECT_URL = "login"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+PRIVATE_EXPENSE_ROOT = BASE_DIR / "private_expense_files"
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
+# Absolute currency difference allowed for a GSTR-2B amount comparison.
+GST_RECONCILIATION_AMOUNT_TOLERANCE = "1.00"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 12 * 1024 * 1024
+# 2,000 sales x 2 registration fields + 10,000 selected import IDs + 64 controls.
+# Round 14,064 up to 15,000; keep the 12 MB body bound and service limits.
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 15_000
+
+# Explicit SMTP configuration is never replaced with an in-memory fallback.
+globals().update(email_settings(os.environ))
+PASSWORD_RESET_TIMEOUT = int(os.environ.get("PASSWORD_RESET_TIMEOUT", "3600"))
+EMAIL_VERIFICATION_TIMEOUT = int(os.environ.get("EMAIL_VERIFICATION_TIMEOUT", "86400"))
+ACCOUNT_RATE_LIMIT_ATTEMPTS = 10
+ACCOUNT_RATE_LIMIT_WINDOW = 900
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"account_tokens": {"()": "accounts.logging.RedactAccountTokens"}},
+    "loggers": {
+        "django.server": {"filters": ["account_tokens"]},
+        "django.request": {"filters": ["account_tokens"]},
+    },
+}
+
+DOCUMENT_MAX_PAGES = 50
+DOCUMENT_MAX_PIXELS = 25_000_000
+OCR_TIMEOUT = 30
+INVOICE_BATCH_MAX_FILES = 20
+
+# Preserve the old backend path for existing sessions and Django admin compatibility.
+# Public login sends only email credentials, so username fallback is never used there.
+AUTHENTICATION_BACKENDS = [
+    "accounts.backends.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# Selectable percentages, not legal HSN/date classification. Extend after review.
+GST_ALLOWED_RATES = tuple(value.strip() for value in os.environ.get("GST_ALLOWED_RATES", "0,5,12,18,28,40").split(",") if value.strip())
+
+from decimal import Decimal, InvalidOperation
+try:
+    _gst_rates=tuple(Decimal(value) for value in GST_ALLOWED_RATES)
+    if not _gst_rates or Decimal("0") not in _gst_rates or any(not value.is_finite() or not 0<=value<=100 or value!=value.quantize(Decimal("0.01")) for value in _gst_rates):
+        raise ValueError
+except (ValueError,InvalidOperation):
+    raise ImproperlyConfigured("GST_ALLOWED_RATES must include zero and contain finite percentages from 0 to 100 with at most two decimals.") from None
+
+GST_ALLOWED_RATES = tuple(format(value.normalize(), "f") for value in dict.fromkeys(_gst_rates))
+
+# Test isolation: `manage.py test` never writes uploads into the real media/private folders.
+import sys as _sys
+if len(_sys.argv) > 1 and _sys.argv[1] == "test":
+    import atexit as _atexit, shutil as _shutil, tempfile as _tempfile
+    _TEST_STORAGE = _tempfile.mkdtemp(prefix="smart-invoice-test-media-")
+    _atexit.register(_shutil.rmtree, _TEST_STORAGE, True)
+    MEDIA_ROOT = Path(_TEST_STORAGE) / "media"
+    PRIVATE_EXPENSE_ROOT = Path(_TEST_STORAGE) / "private_expense_files"

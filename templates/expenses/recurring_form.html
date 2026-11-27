@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} | Smart Invoice{% endblock %}
+{% block content %}
+<div class="expense-page-header"><div><p class="eyebrow mb-2">SCHEDULED COSTS</p><h1>{{ page_title }}</h1><p>Each due period creates a separate unpaid expense bill.</p></div><a class="btn btn-outline-secondary" href="{% url 'recurring_expense_list' %}">Cancel</a></div>
+<form method="post" class="expense-panel card recurring-form">{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}<div class="row g-3">{% for field in form %}<div class="col-12 col-md-6"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="form-text">{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endfor %}</div><div class="expense-form-actions pb-0"><button class="btn btn-primary" type="submit">Save schedule</button></div></form>
+{% endblock %}

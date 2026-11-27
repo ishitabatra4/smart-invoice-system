@@ -1,0 +1,11 @@
+{% for section in sections %}
+<section class="nav-section" aria-labelledby="nav-section-{{ section.key }}">
+<h2 class="nav-section-heading" id="nav-section-{{ section.key }}">{{ section.label }}</h2>
+{% for group in section.menus %}
+{% if group.label %}<details class="nav-group" data-nav-accordion{% if group.active %} open{% endif %}>
+<summary class="nav-link-custom{% if group.active %} is-parent-active{% endif %}"><svg class="nav-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 3h10l4 4v14H5z M9 11h6 M9 15h6 M14 3v5h5"/></svg><span>{{ group.label }}</span><svg class="nav-group-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 3 5 5-5 5"/></svg></summary>
+<div class="nav-group-items">{% endif %}
+{% for link in group.links %}<a class="nav-link-custom{% if link.active %} is-active{% endif %}" href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}{% if link.hint %} title="{{ link.hint }}"{% endif %}>{% if not group.label %}<svg class="nav-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z"/></svg>{% endif %}<span>{{ link.label }}</span></a>{% endfor %}
+{% if group.label %}</div></details>{% endif %}
+{% endfor %}</section>
+{% endfor %}

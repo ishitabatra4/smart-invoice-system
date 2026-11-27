@@ -1,0 +1,10 @@
+{% extends "accounts/email_base.html" %}
+{% block email_body %}
+<h1 style="font-size:24px;line-height:1.3;">Welcome to Smart Invoice</h1>
+<p>Confirm your email address to activate your workspace.</p>
+<p><a style="display:inline-block;background:#30362e;color:white;border-radius:8px;padding:12px 20px;text-decoration:none;" href="{{ verification_url }}">Verify email address</a></p>
+<p>This link expires {{ expiration }} after it was requested. Once verified, sign in using your email address and password.</p>
+<p>If the button doesn't work, copy this link into your browser:</p>
+<p style="word-break:break-all;font-size:13px;">{{ verification_url }}</p>
+<p>If you didn't create this account or request this message, ignore this email.</p>
+{% endblock %}

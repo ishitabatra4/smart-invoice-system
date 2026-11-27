@@ -1,0 +1,55 @@
+[
+  {
+    "case_id": "QUOTE-ACCEPT-CONVERT",
+    "kind": "quotation",
+    "customer_key": "customer",
+    "source_case": "EXCLUSIVE-18",
+    "document_date": "2026-11-01",
+    "valid_until": "2026-11-30",
+    "steps": [
+      "Save draft",
+      "Issue",
+      "Accept",
+      "Convert once using actual assigned IDs/numbers"
+    ],
+    "expected_estimate": {
+      "taxable_amount": "1000.00",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.00"
+    },
+    "financial_recognition": "None until conversion creates/finalizes a sales invoice; repeating conversion must not duplicate it"
+  },
+  {
+    "case_id": "PROFORMA-CANCEL",
+    "kind": "proforma",
+    "customer_key": "interstate_customer",
+    "source_case": "INTERSTATE-18",
+    "supplier_state": "27",
+    "place_of_supply": "29",
+    "document_date": "2026-11-01",
+    "valid_until": "2026-11-30",
+    "steps": [
+      "Save",
+      "Issue",
+      "Cancel"
+    ],
+    "expected_estimate": {
+      "taxable_amount": "2000.00",
+      "cgst_amount": "0.00",
+      "sgst_amount": "0.00",
+      "igst_amount": "360.00",
+      "total_amount": "2360.00"
+    },
+    "financial_recognition": "No payments, sales or receivables"
+  },
+  {
+    "case_id": "QUOTE-EXPIRED",
+    "kind": "quotation",
+    "document_date": "2026-10-01",
+    "valid_until": "2026-10-31",
+    "source_case": "EXCLUSIVE-18",
+    "expected": "Expiry depends on current local date; not a live email test"
+  }
+]

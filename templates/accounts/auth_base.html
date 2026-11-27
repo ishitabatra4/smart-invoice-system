@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Your workspace | Smart Invoice{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/tokens.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <script src="{% static 'js/auth.js' %}" defer></script>
+</head>
+<body class="auth-surface">
+    <main class="auth-frame">
+        <section class="auth-panel" aria-labelledby="auth-heading">
+            <a class="auth-brand" href="{% url 'login' %}" aria-label="Smart Invoice — sign in">
+                <span class="auth-mark" aria-hidden="true">S</span><span>Smart Invoice</span>
+            </a>
+            {% if messages %}<div class="auth-messages" aria-live="polite">{% for message in messages %}
+                <div class="auth-alert{% if message.tags == 'error' %} auth-alert-error{% endif %}" role="status">{{ message }}</div>
+            {% endfor %}</div>{% endif %}
+            {% block auth_body %}{% endblock %}
+        </section>
+        <p class="auth-caption">A little more order for your business.</p>
+    </main>
+</body>
+</html>

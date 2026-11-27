@@ -1,0 +1,53 @@
+{
+  "gst_period": {
+    "kind": "monthly",
+    "start_date": "2026-11-01",
+    "end_date": "2026-11-30",
+    "cases": [
+      "EXCLUSIVE-18",
+      "PURCHASE-18"
+    ],
+    "aato_band": "up_to_5cr",
+    "recipient_registration_by_case": {
+      "EXCLUSIVE-18": {
+        "status": "registered",
+        "reason": "Fictional local test evidence only; not an official lookup"
+      }
+    },
+    "expected_book_output_components": {
+      "cgst": "90.00",
+      "sgst": "90.00"
+    },
+    "expected_book_input_components": {
+      "cgst": "90.00",
+      "sgst": "90.00"
+    },
+    "workflow": [
+      "Confirm standard domestic scope independently",
+      "Review recipient registration evidence",
+      "Preview included/excluded sources",
+      "Prepare reviewed snapshot",
+      "Review / revise without changing old snapshot"
+    ],
+    "limitations": "Book components only, not statutory liability/utilization. Select actual invoice and import-run IDs; no prefilled attestation."
+  },
+  "income_estimate": {
+    "period": {
+      "kind": "financial_year",
+      "start_date": "2026-04-01",
+      "end_date": "2027-03-31"
+    },
+    "business_type": "proprietorship",
+    "taxpayer": "resident_individual",
+    "regime": "new",
+    "assessment_year": "not_applicable",
+    "taxable_income": "1600000.00",
+    "expected_current_application_tax": "124800.00",
+    "expected_status": "estimated",
+    "expected_scope": "Current application rule regression only, not independently verified statutory tax",
+    "deductions": "0.00",
+    "resident_confirmed": "Independent review required",
+    "ordinary_only": "Independent review required",
+    "expected": "Compare with current application rule bundle; not accounting profit or filing advice. Unsupported old regime/company/high income must require manual review."
+  }
+}

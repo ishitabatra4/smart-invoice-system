@@ -3,6 +3,7 @@
 {% block title %}Invoice {{ invoice.invoice_number }} | Smart Invoice{% endblock %}
 
 {% block content %}
+{% load adjustments %}{% adjustment_panel invoice %}
 <div class="page-header">
     <div>
         <h1>Invoice Details</h1>
@@ -14,19 +15,18 @@
     </a>
 </div>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} mt-3">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %}
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a class="btn btn-primary" href="{% url 'invoice_pdf' invoice.pk %}">{% if invoice.status == 'cancelled' %}Download cancelled copy{% else %}Download PDF record copy{% endif %}</a>
+    {% if invoice.source_file %}<a class="btn btn-outline-primary" href="{% url 'invoice_source' invoice.pk %}?download=1">Download Original</a>{% endif %}
+</div>
 
-{% if invoice.validation_errors %}
+
+
+{% if validation_errors %}
     <div class="alert alert-warning mt-4">
         <h5>Validation Issues</h5>
         <ul class="mb-0">
-            {% for error in invoice.validation_errors %}
+            {% for error in validation_errors %}
                 <li>{{ error }}</li>
             {% endfor %}
         </ul>
@@ -37,7 +37,14 @@
     </div>
 {% endif %}
 
-<div class="card mt-4">
+{% if invoice.total_mismatch %}
+    <div class="alert alert-warning mt-3">
+        <strong>Tax/total mismatch:</strong> The invoice total (₹{{ invoice.total_amount|floatformat:2 }}) differs from taxable amount, taxes, and other charges (₹{{ invoice.calculated_total|floatformat:2 }}).
+    </div>
+{% endif %}
+
+<div class="row g-3 mt-1 align-items-stretch">
+<div class="col-12 col-xl-7"><div class="card h-100">
     <div class="card-body">
         <h5>Invoice Summary</h5>
 
@@ -54,7 +61,12 @@
 
             <div class="col-md-4">
                 <small class="text-muted">Invoice Date</small>
-                <div>{{ invoice.invoice_date|date:"d M Y"|default:"—" }}</div>
+                <div>{% include 'invoices/_invoice_date.html' %}</div>
+            </div>
+
+            <div class="col-md-4">
+                <small class="text-muted">Due Date</small>
+                <div>{% with dates=invoice.source_dates %}{% if dates.due_date %}{{ dates.due_date|date:'d M Y' }}{% elif dates.due_state == 'unknown' %}Unknown — review required{% else %}Not set{% endif %}{% if dates.due_state == 'extracted' %} — extracted, unconfirmed{% endif %}{% endwith %}</div>
             </div>
 
             <div class="col-md-4">
@@ -116,8 +128,8 @@
                 <small class="text-muted">Status</small>
                 <div>{{ invoice.get_status_display }}</div>
             </div>
-        </div>
-    </div>
+</div></div></div>
+{% if invoice.source_file %}<div class="col-12 col-xl-5"><section class="card h-100"><div class="card-body"><h5>Source document</h5><p class="small text-muted">Compare the uploaded document with the extracted values.</p>{% if source_is_pdf %}<iframe class="invoice-source-frame" src="{% url 'invoice_source' invoice.pk %}" title="Original invoice PDF"></iframe>{% elif source_is_image %}<div class="invoice-source-image-wrap"><img class="img-fluid" src="{% url 'invoice_source' invoice.pk %}" alt="Original invoice image"></div>{% else %}<p>Preview is unavailable for this file type.</p>{% endif %}<a class="btn btn-sm btn-outline-primary mt-3" href="{% url 'invoice_source' invoice.pk %}" target="_blank" rel="noopener noreferrer">Open original</a></div></section></div>{% endif %}
 </div>
 
 <div class="card mt-4">
@@ -145,11 +157,11 @@
                             <td>{{ item.description|default:"—" }}</td>
                             <td>{{ item.hsn_sac_code|default:"—" }}</td>
                             <td>{{ item.quantity|floatformat:2 }}</td>
-                            <td>₹{{ item.rate|floatformat:2 }}</td>
-                            <td>₹{{ item.taxable_amount|floatformat:2 }}</td>
+                            <td class="amount">₹{{ item.rate|floatformat:2 }}</td>
+                            <td class="amount">₹{{ item.taxable_amount|floatformat:2 }}</td>
                             <td>{{ item.tax_rate|floatformat:2 }}%</td>
-                            <td>₹{{ item.tax_amount|floatformat:2 }}</td>
-                            <td>₹{{ item.total_amount|floatformat:2 }}</td>
+                            <td class="amount">₹{{ item.tax_amount|floatformat:2 }}</td>
+                            <td class="amount">₹{{ item.total_amount|floatformat:2 }}</td>
                         </tr>
                     {% empty %}
                         <tr>
@@ -164,7 +176,7 @@
 
         {% if invoice.source_file %}
             <a
-                href="{{ invoice.source_file.url }}"
+                href="{% if invoice.invoice_type == 'expense' %}{% url 'expense_attachment' invoice.pk %}{% else %}{% url 'invoice_source' invoice.pk %}{% endif %}"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="btn btn-outline-primary"
@@ -173,9 +185,18 @@
             </a>
         {% endif %}
 
+        {% if invoice.status == "review" %}
+            <a href="{% url 'invoice_edit' invoice.pk %}" class="btn btn-primary ms-2">Edit Invoice</a>
+            <form method="post" action="{% url 'invoice_verify' invoice.pk %}" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success ms-2">Verify Invoice</button>
+            </form>
+        {% endif %}
+
         <a href="{% url 'invoice_list' %}" class="btn btn-outline-secondary ms-2">
             Back to Invoices
         </a>
     </div>
 </div>
+<section class="card mt-4"><div class="card-body"><h5>Activity History</h5><div class="table-responsive"><table class="table table-hover"><thead><tr><th>Date</th><th>User</th><th>Action</th><th>Description</th></tr></thead><tbody>{% for event in activity %}<tr><td>{{ event.created_at|date:"d M Y, H:i" }}</td><td>{{ event.actor_label|default:"System" }}</td><td>{{ event.get_action_display }}</td><td><a href="{% url 'audit_event_detail' event.pk %}">{{ event.description }}</a></td></tr>{% empty %}<tr><td colspan="4" class="text-muted">No activity recorded.</td></tr>{% endfor %}</tbody></table></div></div></section>
 {% endblock %}

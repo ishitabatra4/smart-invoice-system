@@ -1,0 +1,9 @@
+{% extends "accounts/auth_base.html" %}
+{% block title %}Confirm your email | Smart Invoice{% endblock %}
+{% block auth_body %}
+<span class="auth-state-icon" aria-hidden="true">✓</span>
+<h1 id="auth-heading">Verify your email</h1>
+<p class="auth-subtitle">Confirm this email address to activate your Smart Invoice account.</p>
+<form method="post" data-auth-form>{% csrf_token %}<button class="auth-primary" type="submit" data-busy-text="Verifying…">Verify email</button></form>
+<p class="auth-back"><a href="{% url 'resend_verification' %}">Request a new verification link</a></p>
+{% endblock %}

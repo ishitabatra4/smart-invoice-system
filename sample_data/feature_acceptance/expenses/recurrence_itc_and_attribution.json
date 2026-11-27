@@ -1,0 +1,53 @@
+{
+  "inclusive_schedule": {
+    "title": "Synthetic month-end subscription",
+    "supplier_key": "vendor",
+    "category": "Synthetic subscription",
+    "amount": "1180.03",
+    "gst_rate": "18",
+    "gst_inclusive": true,
+    "supplier_state_code": "27",
+    "place_of_supply": "27",
+    "supply_category": "standard",
+    "tax_treatment": "taxable",
+    "frequency": "monthly",
+    "start_date": "2026-10-31",
+    "expected_dates": [
+      "2026-10-31",
+      "2026-11-30",
+      "2026-12-31"
+    ],
+    "expected_each_occurrence": {
+      "taxable_amount": "1000.03",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.03"
+    },
+    "checks": [
+      "Explicit catch-up for historical dates",
+      "Generate twice: no duplicate periods",
+      "Edit only notes: saved taxable/GST/grand total unchanged"
+    ]
+  },
+  "attribution": {
+    "source_case": "PURCHASE-18",
+    "steps": [
+      "Verify purchase",
+      "Attribute existing purchase to expense category",
+      "Compare financial report totals"
+    ],
+    "expected": "One financial invoice; never sum purchase and attributed-register values as two costs"
+  },
+  "itc": {
+    "source_case": "PURCHASE-18",
+    "supporting_document": "documents/PURCHASE-18.pdf",
+    "steps": [
+      "Pending review",
+      "Owner-reviewed potential/confirmed or ineligible with reason",
+      "Change source and verify review becomes stale",
+      "Reverse previously confirmed review where supported"
+    ],
+    "expected": "Review evidence and saved GST remain distinct from government-confirmed ITC. Checkbox attestation requires actual independent review; no auto-claim."
+  }
+}

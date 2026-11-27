@@ -1,0 +1,8 @@
+return_period,invoice_number,expected_result
+2026-06,PINE-P-2026-001,Exact Match
+2026-07,PINE-P-2026-002,Match within tolerance; repeated row is deduplicated
+2026-08,PINE-P-2026-005,Mismatch (IGST/CGST/SGST data differs by more than INR 1.00)
+2026-08,PINE-P-2026-005-ALT,Unmatched; normalized invoice number differs from books
+2026-08,RIV-2026-007,Manual review required; two book invoices normalize to the same number
+2026-09,HARBO-2026-009,Unmatched; missing in books
+2026-09,PINE-P-2026-004,Purchase invoice is missing in GSTR-2B

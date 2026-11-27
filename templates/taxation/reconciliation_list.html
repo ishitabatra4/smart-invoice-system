@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}GST Reconciliation | Smart Invoice{% endblock %}
+{% block content %}
+<p class="small text-muted">Uploaded GST extracts are user-supplied and are not independently authenticated. Matching does not establish ITC eligibility. Tax estimates are working calculations, not final statutory determinations; the application does not file returns.</p>
+<div class="page-header"><div><h1>GST Reconciliation</h1><p>Compare user-supplied GSTR-2B extracts with purchase invoices for a return period.</p></div></div>
+
+<div class="card mt-4"><div class="card-body"><h5>Upload user-supplied GSTR-2B extract</h5>
+<form method="post" enctype="multipart/form-data" action="{% url 'reconciliation_upload' %}" class="row g-3 align-items-end">{% csrf_token %}
+<div class="col-md-3"><label class="form-label" for="return_period">GST return period</label><input class="form-control" type="month" id="return_period" name="return_period" required></div>
+<div class="col-md-5"><label class="form-label" for="source_file">GSTR-2B file (.xlsx or .json)</label><input class="form-control" type="file" id="source_file" name="source_file" accept=".xlsx,.json" required></div>
+<div class="col-md-4"><button class="btn btn-primary" type="submit">Upload and Reconcile</button></div></form>
+<p class="small text-muted mt-3 mb-0">Each upload creates a separate historical run. Amount tolerance is ₹{{ tolerance|default:"1.00" }}. Reconciliation does not determine ITC eligibility.</p>
+</div></div>
+<div class="card mt-4"><div class="card-body"><h5>Previous Reconciliation Runs</h5>
+<div class="table-responsive mt-3"><table class="table table-hover align-middle"><thead><tr><th>Return Period</th><th>Uploaded</th><th>Records</th><th>Results</th></tr></thead><tbody>
+{% for run in runs %}<tr><td>{{ run.return_period }}</td><td>{{ run.created_at|date:"d M Y, H:i" }}</td><td>{{ run.records.count }}</td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'reconciliation_run' run.pk %}">View Results</a></td></tr>{% empty %}<tr><td colspan="4" class="text-center text-muted py-4">No reconciliation runs yet.</td></tr>{% endfor %}
+</tbody></table></div></div></div>
+{% endblock %}

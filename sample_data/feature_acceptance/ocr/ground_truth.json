@@ -1,0 +1,26 @@
+{
+  "invoice_number": "FEATURE-RECEIPT-OCR",
+  "invoice_date": "2026-11-01",
+  "supplier_name": "Synthetic Feature Supplier",
+  "supplier_gstin": "27PQRST5678L1Z0",
+  "buyer_gstin": "27ABCDE1234F1Z0",
+  "taxable_amount": "1000.00",
+  "cgst_amount": "90.00",
+  "sgst_amount": "90.00",
+  "igst_amount": "0.00",
+  "total_amount": "1180.00",
+  "line_items": [
+    {
+      "description": "Synthetic service",
+      "hsn_sac_code": "9983",
+      "quantity": "1",
+      "unit": "Nos",
+      "rate": "1000.00",
+      "tax_rate": "18",
+      "tax_treatment": "taxable",
+      "discount_type": "fixed",
+      "discount": "0"
+    }
+  ],
+  "variants": "Use one image/PDF alternative per clean scenario. Mixed PDF intentionally has conflicting invoice numbers. Low-quality/rotation accuracy is not guaranteed; record raw errors."
+}

@@ -1,0 +1,1 @@
+<tr>{% for field in row %}<td style="min-width:{% if field.name == 'description' %}220{% else %}100{% endif %}px"><label class="visually-hidden" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}{% if forloop.first %}{{ row.non_field_errors }}{% endif %}</td>{% endfor %}</tr>

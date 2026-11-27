@@ -113,3 +113,9 @@ class BusinessParty(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.get_party_type_display()})"
+
+class AccountVerification(models.Model):
+    """Only new registrations require verification; legacy users are unchanged."""
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    verified_at = models.DateTimeField(null=True, blank=True)

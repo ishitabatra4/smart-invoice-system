@@ -7,18 +7,15 @@
 <div class="page-header">
     <div>
         <h1>Upload Invoice</h1>
-        <p>Add an invoice PDF, scanned PDF or image.</p>
+        <p>Extract locally, review the original and confirm a draft. Nothing is verified or paid automatically.</p><a href="{% url 'extraction_history' %}">Extraction history and retained failures</a>
     </div>
-    <a class="btn btn-outline-secondary" href="{% url 'invoice_list' %}">
+    <div class="d-flex gap-2"><a class="btn btn-outline-secondary" href="{% url 'invoice_batch_history' %}">Upload history</a><a class="btn btn-outline-secondary" href="{% url 'invoice_list' %}">
         Back to Invoices
-    </a>
+    </a></div>
 </div>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-{% endif %}
+
+{% if batch %}<div class="alert alert-warning">Batch #{{ batch.pk }} was saved. <a href="{% url 'invoice_batch_detail' batch.pk %}">View processing details</a>.</div>{% endif %}
 
 <div class="card mt-4">
     <div class="card-body">
@@ -26,51 +23,28 @@
             {% csrf_token %}
 
             <div class="mb-3">
-                <label class="form-label">Invoice type</label>
-                <select class="form-select" name="invoice_type" required>
+                <label class="form-label" for="invoice-type">Invoice type</label>
+                <select id="invoice-type" class="form-select" name="invoice_type" required>
                     <option value="purchase">Purchase Invoice</option>
                     <option value="sales">Sales Invoice</option>
                     <option value="expense">Expense Bill</option>
                 </select>
             </div>
 
+            <p>Identify and correct document fields on the review page after extraction. Choose the invoice role relative to your business; OCR never makes a financial posting.</p>
             <div class="mb-3">
-                <label class="form-label">Invoice number</label>
-                <input class="form-control" type="text"
-                       name="invoice_number" maxlength="100" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Invoice date</label>
-                <input class="form-control" type="date"
-                       name="invoice_date" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Supplier name</label>
-                <input class="form-control" type="text"
-                       name="supplier_name" maxlength="255" required>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Supplier GSTIN (optional)</label>
-                <input class="form-control" type="text"
-                       name="supplier_gstin" maxlength="15">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Invoice file</label>
-                <input class="form-control" type="file"
-                       name="source_file"
-                       accept=".pdf,.png,.jpg,.jpeg"
+                <label class="form-label" for="invoice-files">Invoice file</label>
+                <input id="invoice-files" class="form-control" type="file"
+                       name="source_files"
+                       accept=".pdf,.png,.jpg,.jpeg" multiple
                        required>
                 <small class="text-muted">
-                    PDF, PNG, JPG or JPEG. Maximum 10 MB.
+                    Select one or more digital PDFs, scanned PDFs, PNG, JPG or JPEG files. Maximum 10 MB per file. Scanned documents require the local Tesseract executable. Missing OCR does not discard the original; manual review remains available.
                 </small>
             </div>
 
             <button class="btn btn-primary" type="submit">
-                Upload Invoice
+                Extract for Review
             </button>
         </form>
     </div>

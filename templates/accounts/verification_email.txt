@@ -1,0 +1,15 @@
+{% autoescape off %}SMART INVOICE
+Verify your Smart Invoice email address
+
+Welcome to Smart Invoice. Confirm your email address to activate your workspace:
+
+{{ verification_url }}
+
+This verification link expires {{ expiration }} after it was requested.
+Once your email is verified, sign in using your email address and password.
+If you didn't create this account or request this message, ignore this email.
+Never share this link or your password.
+
+Smart Invoice
+Your business, in good order.
+{% endautoescape %}

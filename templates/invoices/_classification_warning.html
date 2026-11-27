@@ -1,0 +1,8 @@
+{% if classification %}
+<section class="card card-body my-3" aria-labelledby="invoice-classification-title">
+<h2 class="h5" id="invoice-classification-title">Current invoice classification</h2>
+<p>{{ invoice.get_invoice_type_display }} · {{ classification.status|title }} · {{ classification.strength|title }} identity evidence. Classification is unconfirmed.</p>
+<ul class="{% if classification.status != 'consistent' %}text-warning{% endif %} mb-0">{% for message in classification.messages %}<li>{{ message }}</li>{% endfor %}</ul>
+<p class="small text-muted mt-2 mb-0">Current assessment uses the current invoice type; historical upload choices and extraction warnings are unchanged. No acknowledgement bypasses financial identity checks.</p>
+</section>
+{% endif %}

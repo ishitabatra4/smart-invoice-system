@@ -1,0 +1,9 @@
+metric,expected_inr
+Total Sales,82460.00
+Total Purchases (excludes review mismatch invoice),65330.00
+Total Expenses,12210.00
+Payments Received,68060.00
+Payments Made,29090.00
+Accounts Receivable,14400.00
+Accounts Payable,36240.00
+Net Cash Flow,38970.00

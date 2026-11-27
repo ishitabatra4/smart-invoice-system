@@ -1,0 +1,6 @@
+invoice_number,payment_date,amount,payment_mode,reference_id,notes
+SALE-AC-2026-001,2026-06-20,10000.00,UPI,SAMP-RCPT-001A,Partial receipt
+SALE-NV-2026-004,2026-09-10,2000.00,Cheque,SAMP-RCPT-004A,Partial receipt
+PINE-P-2026-002,2026-07-20,10000.00,UPI,SAMP-PAY-002A,Partial supplier payment
+PINE-P-2026-005,2026-08-10,2000.00,Cash,SAMP-PAY-005A,Partial supplier payment
+RIV-2026-007,2026-08-30,1000.00,Cash,SAMP-PAY-RIV-A,Partial supplier payment

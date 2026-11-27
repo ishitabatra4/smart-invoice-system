@@ -1,0 +1,18 @@
+{% autoescape off %}Hello {{ customer_name }},
+
+Please find your {% if commercial or adjustment %}{{ document_label|lower }}{% else %}invoice{% endif %} from {{ business_name }} attached as a PDF.
+
+{{ document_label|default:"Invoice" }}: {{ invoice_number }}
+{% if commercial or adjustment %}Document date:{% else %}Invoice date:{% endif %} {{ invoice_date|date:"d M Y" }}
+{% if due_date %}{% if commercial or adjustment %}Valid until:{% else %}Due date:{% endif %} {{ due_date|date:"d M Y" }}
+{% endif %}{% if adjustment %}Adjustment total:{% elif commercial %}Estimated grand total:{% else %}Grand total:{% endif %} {{ total }}
+{% if not commercial and not adjustment %}Payment records: {{ payment_status }}
+Recorded payments: {{ paid }}{% endif %}
+
+{% if adjustment %}This is an adjustment note for original invoice {{ original_reference }}. Saved adjustment values are attached. This email does not create a payment or refund. GST reporting requires review.{% elif commercial %}This is a non-accounting commercial document, not a tax invoice or payment demand. GST values are estimates. Email acceptance does not record customer acceptance.{% else %}The attached PDF contains saved invoice details and current payment information at the time of sending. Payment information may differ on a later copy.{% endif %}
+
+Thank you for your business.
+{{ business_name }}
+{% if business_email %}Email: {{ business_email }}
+{% endif %}{% if business_phone %}Phone: {{ business_phone }}
+{% endif %}{% endautoescape %}

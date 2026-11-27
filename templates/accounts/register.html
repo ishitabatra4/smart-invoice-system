@@ -1,40 +1,14 @@
-
-{% extends "base.html" %}
-
-{% block title %}Create Account | Smart Invoice{% endblock %}
-
-{% block auth_content %}
-<div class="auth-card">
-    <a class="brand auth-brand" href="{% url 'register' %}">
-        <span class="brand-icon">S</span>
-        <span>Smart Invoice</span>
-    </a>
-
-    <p class="eyebrow">GET STARTED</p>
-    <h1>Create your workspace</h1>
-    <p class="muted">Manage your invoices, expenses and business performance in one place.</p>
-
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-            <div class="form-field">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% for error in field.errors %}
-                    <small class="field-error">{{ error }}</small>
-                {% endfor %}
-            </div>
-        {% endfor %}
-
-        {% if form.non_field_errors %}
-            <div class="field-error">{{ form.non_field_errors }}</div>
-        {% endif %}
-
-        <button class="primary-button" type="submit">Create account →</button>
-    </form>
-
-    <p class="auth-footer">Already have an account?
-        <a href="{% url 'login' %}">Log in</a>
-    </p>
-</div>
+{% extends "accounts/auth_base.html" %}
+{% block title %}Create an account | Smart Invoice{% endblock %}
+{% block auth_body %}
+<h1 id="auth-heading">Create your workspace</h1>
+<p class="auth-subtitle">Your invoices, expenses and business, in good order.</p>
+{% if throttled %}<div class="auth-alert auth-alert-error" role="alert">Too many attempts. Please try again later.</div>{% endif %}
+<form method="post" data-auth-form>
+    {% csrf_token %}
+    {% include "accounts/_auth_fields.html" %}
+    <button class="auth-primary" type="submit" data-busy-text="Creating your account…">Create account</button>
+</form>
+<div class="auth-divider"></div>
+<p class="auth-footer">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
 {% endblock %}

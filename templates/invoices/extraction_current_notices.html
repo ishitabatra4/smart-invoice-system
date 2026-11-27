@@ -1,0 +1,18 @@
+{% load extraction_display %}
+{% include 'invoices/_classification_warning.html' %}
+{% include 'invoices/_provisional_actions.html' %}
+<section class="card card-body my-3" aria-labelledby="current-extraction-notices">
+<h2 id="current-extraction-notices" class="h5">Current validation and review requirements</h2>
+{% for signal in current_duplicate_signals %}<p class="text-warning"><strong>Current duplicate check — {{ signal.kind }}:</strong> {{ signal.reason }}</p>{% endfor %}
+<p>{{ stored_notice_count }} stored notice(s) · {{ historical_warning_count }} historical extraction warning(s). Stored notices can also include the requirement to confirm a provisional extraction; these counts are not interchangeable.</p>
+{% if current_notices %}{% extraction_warnings current_notices %}{% else %}<p>No pending extraction-review requirements.</p>{% endif %}
+<p class="small text-muted mt-2 mb-0">Historical warnings remain unchanged. Current checks do not save or verify anything; financial verification still performs all required checks.</p>
+<h3 class="h6 mt-3">Invoice-date review</h3>
+<p>Extracted invoice-date candidate: <strong>{{ extracted_invoice_date|default_if_none:'Unknown' }}</strong> — unconfirmed source evidence.</p>
+{% if extracted_invoice_confidence.level == 'conflicting' %}<p class="text-warning">Ambiguous or conflicting invoice date. Compare the original; no date was guessed. Candidates: {{ extracted_invoice_confidence.candidates|join:', ' }}.</p>{% endif %}
+{% if date_invoice %}<div>Invoice date: {% include 'invoices/_invoice_date.html' with invoice=date_invoice %}</div>{% else %}<p>Uploaded: {{ date_uploaded_at|date:'d M Y H:i:s T' }}</p>{% endif %}
+<h3 class="h6 mt-3">Due-date review</h3>
+<p>Extracted due-date candidate: <strong>{{ extracted_due_date|default_if_none:'Unknown' }}</strong> — unconfirmed source evidence.</p>
+{% if extracted_due_confidence.level == 'conflicting' %}<p class="text-warning">Ambiguous due date. Compare the original and select the actual date; no date was guessed. Candidates: {{ extracted_due_confidence.candidates|join:', ' }}.</p>{% endif %}
+<p>Saved due date: {% if saved_due_date %}<strong>{{ saved_due_date|date:'Y-m-d' }}</strong>{% else %}<strong>Not set</strong>{% endif %} · {% if due_date_confirmed %}Confirmed review{% else %}Not confirmed by a current review{% endif %}. The extracted candidate is not automatically a saved payment deadline.</p>
+</section>

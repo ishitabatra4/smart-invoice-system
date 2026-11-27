@@ -1,0 +1,27 @@
+/* Shared workspace and authentication design tokens. No remote font dependency. */
+:root {
+    --ui-primary: #4338ca;
+    --ui-primary-hover: #3730a3;
+    --ui-primary-soft: #eeedff;
+    --ui-ink: #182235;
+    --ui-muted: #5b6576;
+    --ui-border: #dce1e9;
+    --ui-canvas: #f5f6fa;
+    --ui-surface: #fff;
+    --ui-success: #166544;
+    --ui-success-soft: #eaf6ef;
+    --ui-warning: #805400;
+    --ui-warning-soft: #fff6df;
+    --ui-danger: #a62c39;
+    --ui-danger-soft: #fff0f1;
+    --ui-space-1: .25rem;
+    --ui-space-2: .5rem;
+    --ui-space-3: .75rem;
+    --ui-space-4: 1rem;
+    --ui-space-6: 1.5rem;
+    --ui-radius: .5rem;
+    --ui-shadow: 0 1px 2px rgb(24 34 53 / 3%);
+    --ui-font: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --ui-control-height: 36px;
+    --ui-sidebar-width: 236px;
+}

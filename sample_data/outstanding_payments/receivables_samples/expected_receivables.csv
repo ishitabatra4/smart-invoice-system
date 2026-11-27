@@ -1,0 +1,6 @@
+invoice_number,invoice_type,invoice_total,payments,outstanding,expected_status
+SALE-AC-2026-001,sales,29500.00,29500.00,0.00,Paid
+SALE-AC-2026-002,sales,10500.00,0.00,10500.00,Unpaid
+SALE-NV-2026-003,sales,20160.00,20160.00,0.00,Paid
+SALE-NV-2026-004,sales,5900.00,2000.00,3900.00,Partially paid
+SALE-CD-2026-005,sales,16400.00,16400.00,0.00,Paid

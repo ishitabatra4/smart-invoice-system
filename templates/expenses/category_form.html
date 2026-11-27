@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Edit Expense Category | Smart Invoice{% endblock %}
+{% block content %}
+<div class="expense-page-header"><div><p class="eyebrow mb-2">SETTINGS</p><h1>Edit category</h1><p>Update the name shown in expense reports.</p></div><a href="{% url 'expense_categories' %}" class="btn btn-outline-secondary">Back</a></div>
+<section class="expense-panel card"><form method="post">{% csrf_token %}<label class="form-label" for="category-name">Category name</label><input class="form-control mb-3" id="category-name" name="name" maxlength="100" value="{{ category.name }}" required><input type="hidden" name="category_status_present" value="1"><label for="category-active"><input id="category-active" name="is_active" type="checkbox" {% if category.is_active %}checked{% endif %}> Active</label><button class="btn btn-primary" type="submit">Save category</button></form></section>
+{% endblock %}

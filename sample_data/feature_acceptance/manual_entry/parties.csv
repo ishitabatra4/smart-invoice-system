@@ -1,0 +1,7 @@
+key,name,party_type,gstin,state_code,email
+business,Sandbox Feature Lab (Fictional),business,27ABCDE1234F1Z0,27,business@example.test
+customer,Synthetic Feature Customer,customer,27FGHIJ2468K1ZB,27,customer@example.test
+interstate_customer,Synthetic Interstate Customer,customer,29ABCDE9876G1ZY,29,customer-interstate@example.test
+vendor,Synthetic Feature Supplier,vendor,27PQRST5678L1Z0,27,supplier@example.test
+interstate_vendor,Synthetic Interstate Supplier,vendor,29LMNOP4321A1ZX,29,interstate@example.test
+both,Synthetic Customer and Supplier,both,27UVWXY1357B1Z2,27,both@example.test

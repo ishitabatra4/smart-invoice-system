@@ -1,0 +1,5 @@
+<div class="extraction-warning-groups alert alert-warning mb-0">
+{% if warning_total %}<p class="extraction-warning-summary mb-2"><strong>{{ warning_total }} warning{{ warning_total|pluralize }}</strong>{% if critical_total %} — {{ critical_total }} critical; resolve or confirm against the original before verification{% endif %}.</p>{% endif %}
+{% for group in warning_groups %}<section class="extraction-warning-group"><h3 class="h6">{% if group.severity_label %}<span class="badge extraction-severity extraction-severity-{{ group.severity }}">{{ group.severity_label }}</span> {% endif %}{{ group.title }} <span class="text-muted small">({{ group.items|length }})</span></h3><ul>
+{% for warning in group.items %}<li>{% if warning.expandable %}<strong>{{ warning.summary }}</strong><details><summary>Show full warning and required inputs</summary><p class="extraction-warning-text">{{ warning.message }}</p></details>{% else %}<p class="extraction-warning-text">{{ warning.message }}</p>{% endif %}</li>{% endfor %}
+</ul></section>{% endfor %}</div>

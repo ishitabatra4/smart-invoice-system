@@ -1,0 +1,24 @@
+{% extends "base.html" %}{% load static %}
+{% block title %}{% if invoice %}Edit draft{% else %}Create {{ invoice_type }} invoice{% endif %} | Smart Invoice{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>{% if invoice %}Edit draft {{ invoice.invoice_number }}{% else %}Create {{ invoice_type }} invoice{% endif %}</h1><p>Save a draft, review its preview, then {% if invoice_type == 'sales' %}finalize{% else %}verify{% endif %} it.</p></div><a class="btn btn-outline-secondary" href="{% url 'invoice_list' %}">Back to invoices</a></div>
+{% if invoice and not invoice.calculation_version %}<div class="alert alert-warning">This earlier draft needs review. Confirm its pricing mode, tax rates, tax treatments and supply details before saving. Its saved amounts have not been changed automatically.</div>{% endif %}
+<form method="post" id="manual-invoice-form" data-gst-preview-url="{% url 'invoice_calculate' invoice_type %}" data-gst-preview-target="invoice-live-totals" {% if invoice %}data-invoice-id="{{ invoice.pk }}"{% endif %}>
+{% csrf_token %}{{ form.creation_token }}
+{% if form.non_field_errors %}<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+<section class="card mb-4"><div class="card-body"><h2 class="h5">Invoice details</h2><div class="row g-3">
+{% for field in form.visible_fields %}<div class="col-md-6"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% for error in field.errors %}<div class="text-danger small" role="alert">{{ error }}</div>{% endfor %}</div>{% endfor %}
+</div></div></section>
+<details class="card mb-4" {% if form.add_new_party.value or party_form.errors %}open{% endif %}><summary class="card-header">New {% if invoice_type == 'sales' %}customer{% else %}supplier{% endif %} details</summary><div class="card-body"><p class="text-muted">Select “Add a new customer / supplier” above to create this party with the draft. Otherwise these fields are ignored.</p>{{ party_form.non_field_errors }}<div class="row g-3">{% for field in party_form %}<div class="col-md-6"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}</div></div></details>
+<section class="card mb-4"><div class="card-body"><h2 class="h5">Line items</h2><p class="text-muted">Rates follow the selected pricing mode. Fixed or percentage line discounts apply in that same basis. Invoice discounts are allocated before tax. The live preview and save use the same server calculation.</p>{{ formset.management_form }}{{ formset.non_form_errors }}
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Product / service</th><th>HSN/SAC</th><th>Quantity</th><th>Unit</th><th>Rate (₹)</th><th>Discount type</th><th>Discount value</th><th>Tax treatment</th><th>GST (%)</th><th>Remove</th></tr></thead><tbody id="invoice-line-rows">
+{% for row in formset %}{% include "invoices/_manual_line.html" %}{% endfor %}
+</tbody></table></div><button class="btn btn-outline-secondary" type="button" id="add-invoice-line">+ Add line item</button><p class="small text-danger" id="line-limit-message" role="status"></p>
+</div></section>
+<div class="alert alert-light border">For standard domestic supplies, supplier state and explicit place of supply determine the tax components. Special supplies and UTGST require manual review. Check the applicable rate and place of supply before finalizing. Round-off adjustment is limited to ₹1 in either direction.</div>
+<div id="invoice-live-totals" class="alert alert-light border" role="status" aria-live="polite">Complete the invoice details to preview tax and totals.</div>
+<button class="btn btn-primary" type="submit">Save draft and preview</button>
+</form>
+<template id="empty-invoice-line">{% include "invoices/_manual_line.html" with row=formset.empty_form %}</template>
+{% endblock %}
+{% block page_scripts %}<script src="{% static 'js/invoice-entry.js' %}" defer></script><script src="{% static 'js/gst-preview.js' %}" defer></script>{% endblock %}

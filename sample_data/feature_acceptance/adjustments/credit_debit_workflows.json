@@ -1,0 +1,50 @@
+{
+  "requires": "Create EXCLUSIVE-18 manually, finalize it with saved versioned lines/snapshots. Upload-only invoices are not eligible originals. Select actual assigned IDs/numbers.",
+  "base_total": "1180.00",
+  "steps": [
+    {
+      "step": "Credit value-only adjustment",
+      "document_date": "2026-11-05",
+      "reason": "Synthetic local value correction",
+      "pricing_mode": "exclusive",
+      "mode": "value",
+      "amount": "200.00",
+      "kind": "credit",
+      "tax_effect": "gst",
+      "expected": {
+        "taxable_amount": "200.00",
+        "cgst_amount": "18.00",
+        "sgst_amount": "18.00",
+        "igst_amount": "0.00",
+        "total_amount": "236.00"
+      },
+      "net_original_amount": "944.00"
+    },
+    {
+      "step": "Debit value-only adjustment",
+      "document_date": "2026-11-10",
+      "reason": "Synthetic local extra value",
+      "pricing_mode": "exclusive",
+      "mode": "value",
+      "amount": "100.00",
+      "kind": "debit",
+      "tax_effect": "gst",
+      "expected": {
+        "taxable_amount": "100.00",
+        "cgst_amount": "9.00",
+        "sgst_amount": "9.00",
+        "igst_amount": "0.00",
+        "total_amount": "118.00"
+      },
+      "net_original_amount": "1062.00"
+    },
+    {
+      "step": "Cancel credit with dated reversal",
+      "cancellation_date": "2026-11-15",
+      "net_original_amount": "1298.00",
+      "expected": "Original invoice values/payments unchanged; dated reversal event, not a fake refund"
+    }
+  ],
+  "received_note_variant": "Repeat against manually verified PURCHASE-18; supplier reference required; system assigns received-note number.",
+  "negative": "A credit above remaining original value must be rejected. Eligibility attestation is a review decision, not statutory certification."
+}

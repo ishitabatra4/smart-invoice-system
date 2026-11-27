@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Send {% if commercial %}commercial document{% else %}invoice{% endif %} email | Smart Invoice{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>{% if retry %}Retry email{% elif commercial %}Send {{ invoice.get_kind_display }}{% else %}Send Invoice Email{% endif %}</h1><p>{{ business_name }} · {% if commercial %}{{ invoice.get_kind_display }}{% else %}Invoice{% endif %} {{ invoice.invoice_number }}</p></div><a class="btn btn-outline-secondary" href="{% if commercial %}{% url 'commercial_detail' invoice.pk %}{% else %}{% url 'invoice_detail' invoice.pk %}{% endif %}">Back to document</a></div>
+<section class="card"><div class="card-body">
+<p>A PDF copy of <strong>{{ invoice.invoice_number }}</strong> will be attached. {% if commercial %}It contains saved commercial estimates, not a tax invoice or payment demand. Backend acceptance is not customer acceptance.{% else %}It uses saved invoice details and the current payment summary. The PDF is not an immutable archived payment statement.{% endif %}</p>
+{% if retry %}<p class="alert alert-warning">Previous attempt: {{ retry.get_status_display }}{% if retry.error_category %} · {{ retry.error_category }}{% endif %}. This retry creates a separate history record.</p>{% endif %}
+<p>Suggested recipient: <strong>{{ default_recipient|default:"No customer email recorded" }}</strong>. Correcting it here will not update the customer directory.</p>
+<form method="post">{% csrf_token %}{{ form.send_token }}{{ form.non_field_errors }}{{ form.send_token.errors }}
+<div class="mb-3">{{ form.recipient.label_tag }}{{ form.recipient }}{{ form.recipient.errors }}</div>
+{% for field in form %}{% if field.name != 'recipient' and field.name != 'send_token' %}<div class="form-check mb-3">{{ field }} <label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field.errors }}</div>{% endif %}{% endfor %}
+<p class="small text-muted">One recipient per attempt. At least 60 seconds between attempts; failed chains allow up to three attempts. Backend acceptance does not confirm delivery to the inbox. Never resend an uncertain attempt without checking first.</p>
+<button class="btn btn-primary" type="submit">{% if retry %}Confirm retry{% elif commercial %}Confirm and send document PDF{% else %}Confirm and send invoice PDF{% endif %}</button>
+</form></div></section>
+{% endblock %}

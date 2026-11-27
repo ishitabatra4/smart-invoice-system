@@ -1,0 +1,1977 @@
+[
+  {
+    "case_id": "EXCLUSIVE-18",
+    "reference_number": "FEATURE-EXCLUSIVE-18",
+    "invoice_type": "sales",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "customer",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "1000.00",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "1000.00",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "1000.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "1000.00",
+        "cgst_amount": "90.00",
+        "sgst_amount": "90.00",
+        "igst_amount": "0.00",
+        "total_amount": "1180.00",
+        "tax_amount": "180.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "INCLUSIVE-ROUNDING",
+    "reference_number": "FEATURE-INCLUSIVE-ROUNDING",
+    "invoice_type": "expense",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "vendor",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "1180.03",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "inclusive",
+    "options": {
+      "pricing_mode": "inclusive"
+    },
+    "expected": {
+      "taxable_amount": "1000.03",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.03"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "1000.03",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "1000.03",
+        "cgst_amount": "90.00",
+        "sgst_amount": "90.00",
+        "igst_amount": "0.00",
+        "total_amount": "1180.03",
+        "tax_amount": "180.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "INTERSTATE-18",
+    "reference_number": "FEATURE-INTERSTATE-18",
+    "invoice_type": "purchase",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "interstate_vendor",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "2",
+        "unit": "Nos",
+        "rate": "1000.00",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "29",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "2000.00",
+      "cgst_amount": "0.00",
+      "sgst_amount": "0.00",
+      "igst_amount": "360.00",
+      "total_amount": "2360.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "2000.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "2000.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "360.00",
+        "total_amount": "2360.00",
+        "tax_amount": "360.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "MIXED-RATES",
+    "reference_number": "FEATURE-MIXED-RATES",
+    "invoice_type": "sales",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "customer",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "5",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "12",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "28",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "exempt",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "nil_rated",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "non_gst",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "800.00",
+      "cgst_amount": "31.50",
+      "sgst_amount": "31.50",
+      "igst_amount": "0.00",
+      "total_amount": "863.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "500.00",
+      "exempt": "100.00",
+      "nil_rated": "100.00",
+      "non_gst": "100.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "2.50",
+        "sgst_amount": "2.50",
+        "igst_amount": "0.00",
+        "total_amount": "105.00",
+        "tax_amount": "5.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "6.00",
+        "sgst_amount": "6.00",
+        "igst_amount": "0.00",
+        "total_amount": "112.00",
+        "tax_amount": "12.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "9.00",
+        "sgst_amount": "9.00",
+        "igst_amount": "0.00",
+        "total_amount": "118.00",
+        "tax_amount": "18.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "14.00",
+        "sgst_amount": "14.00",
+        "igst_amount": "0.00",
+        "total_amount": "128.00",
+        "tax_amount": "28.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "DISCOUNTS",
+    "reference_number": "FEATURE-DISCOUNTS",
+    "invoice_type": "sales",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "customer",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "2",
+        "unit": "Nos",
+        "rate": "500",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "percent",
+        "discount": "5"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {
+      "invoice_discount_type": "percent",
+      "invoice_discount": "10"
+    },
+    "expected": {
+      "taxable_amount": "855.00",
+      "cgst_amount": "76.95",
+      "sgst_amount": "76.95",
+      "igst_amount": "0.00",
+      "total_amount": "1008.90"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "855.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "855.00",
+        "cgst_amount": "76.95",
+        "sgst_amount": "76.95",
+        "igst_amount": "0.00",
+        "total_amount": "1008.90",
+        "tax_amount": "153.90",
+        "invoice_discount_allocated": "95.00"
+      }
+    ]
+  },
+  {
+    "case_id": "CLASSIFICATIONS",
+    "reference_number": "FEATURE-CLASSIFICATIONS",
+    "invoice_type": "purchase",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "vendor",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "exempt",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "nil_rated",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "non_gst",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "400.00",
+      "cgst_amount": "0.00",
+      "sgst_amount": "0.00",
+      "igst_amount": "0.00",
+      "total_amount": "400.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "100.00",
+      "exempt": "100.00",
+      "nil_rated": "100.00",
+      "non_gst": "100.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "HISTORICAL-PAYMENT",
+    "reference_number": "FEATURE-HISTORICAL-PAYMENT",
+    "invoice_type": "sales",
+    "invoice_date": "2026-10-01",
+    "due_date": "2026-11-30",
+    "party_key": "customer",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "1000.00",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "1000.00",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "1000.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "1000.00",
+        "cgst_amount": "90.00",
+        "sgst_amount": "90.00",
+        "igst_amount": "0.00",
+        "total_amount": "1180.00",
+        "tax_amount": "180.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "BOTH-SALE",
+    "reference_number": "FEATURE-BOTH-SALE",
+    "invoice_type": "sales",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "both",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "100",
+        "tax_rate": "0",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "100.00",
+      "cgst_amount": "0.00",
+      "sgst_amount": "0.00",
+      "igst_amount": "0.00",
+      "total_amount": "100.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "100.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "100.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "100.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "BOTH-PURCHASE",
+    "reference_number": "FEATURE-BOTH-PURCHASE",
+    "invoice_type": "purchase",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "both",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "80",
+        "tax_rate": "0",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "80.00",
+      "cgst_amount": "0.00",
+      "sgst_amount": "0.00",
+      "igst_amount": "0.00",
+      "total_amount": "80.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "80.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "80.00",
+        "cgst_amount": "0.00",
+        "sgst_amount": "0.00",
+        "igst_amount": "0.00",
+        "total_amount": "80.00",
+        "tax_amount": "0.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "PURCHASE-18",
+    "reference_number": "FEATURE-PURCHASE-18",
+    "invoice_type": "purchase",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "vendor",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "1000.00",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "1000.00",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "1000.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "1000.00",
+        "cgst_amount": "90.00",
+        "sgst_amount": "90.00",
+        "igst_amount": "0.00",
+        "total_amount": "1180.00",
+        "tax_amount": "180.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "MULTIPAGE",
+    "reference_number": "FEATURE-MULTIPAGE",
+    "invoice_type": "sales",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "customer",
+    "lines": [
+      {
+        "description": "Synthetic item 01",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 02",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 03",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 04",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 05",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 06",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 07",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 08",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 09",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 10",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 11",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 12",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 13",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 14",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 15",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 16",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 17",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 18",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 19",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 20",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 21",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 22",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 23",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 24",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 25",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 26",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 27",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 28",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 29",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 30",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 31",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 32",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 33",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 34",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 35",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 36",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 37",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 38",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 39",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 40",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 41",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 42",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 43",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 44",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 45",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 46",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 47",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 48",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 49",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 50",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 51",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 52",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 53",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 54",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 55",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 56",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 57",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 58",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 59",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      },
+      {
+        "description": "Synthetic item 60",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "10",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {},
+    "expected": {
+      "taxable_amount": "600.00",
+      "cgst_amount": "54.00",
+      "sgst_amount": "54.00",
+      "igst_amount": "0.00",
+      "total_amount": "708.00"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "600.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      },
+      {
+        "taxable_amount": "10.00",
+        "cgst_amount": "0.90",
+        "sgst_amount": "0.90",
+        "igst_amount": "0.00",
+        "total_amount": "11.80",
+        "tax_amount": "1.80",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  },
+  {
+    "case_id": "ROUND-OFF",
+    "reference_number": "FEATURE-ROUND-OFF",
+    "invoice_type": "purchase",
+    "invoice_date": "2026-11-01",
+    "due_date": "2026-11-30",
+    "party_key": "vendor",
+    "lines": [
+      {
+        "description": "Synthetic service",
+        "hsn_sac_code": "9983",
+        "quantity": "1",
+        "unit": "Nos",
+        "rate": "1000.00",
+        "tax_rate": "18",
+        "tax_treatment": "taxable",
+        "discount_type": "fixed",
+        "discount": "0"
+      }
+    ],
+    "supplier_state": "27",
+    "place_of_supply": "27",
+    "pricing_mode": "exclusive",
+    "options": {
+      "adjustment": "0.50"
+    },
+    "expected": {
+      "taxable_amount": "1000.00",
+      "cgst_amount": "90.00",
+      "sgst_amount": "90.00",
+      "igst_amount": "0.00",
+      "total_amount": "1180.50"
+    },
+    "expected_treatment_breakdown": {
+      "taxable": "1000.00",
+      "exempt": "0.00",
+      "nil_rated": "0.00",
+      "non_gst": "0.00"
+    },
+    "expected_line_values": [
+      {
+        "taxable_amount": "1000.00",
+        "cgst_amount": "90.00",
+        "sgst_amount": "90.00",
+        "igst_amount": "0.00",
+        "total_amount": "1180.00",
+        "tax_amount": "180.00",
+        "invoice_discount_allocated": "0.00"
+      }
+    ]
+  }
+]

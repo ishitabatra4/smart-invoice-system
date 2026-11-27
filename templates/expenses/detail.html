@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ detail.title|default:invoice.supplier_name }} | Expenses{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap gap-2 mb-3"><a class="btn btn-outline-primary" href="{% url 'invoice_pdf' invoice.pk %}">{% if invoice.status == 'cancelled' %}Download cancelled copy{% else %}Download PDF record copy{% endif %}</a></div>
+<div class="expense-page-header"><div><p class="eyebrow mb-2">EXPENSE DETAIL</p><h1>{{ detail.title|default:invoice.supplier_name }}</h1><p>{{ invoice.invoice_number }} · {% include 'invoices/_invoice_date.html' %}</p></div><div class="d-flex flex-wrap gap-2">{% if invoice.status != "cancelled" %}<a href="{% url 'expense_edit' invoice.pk %}" class="btn btn-outline-secondary">Edit</a>{% endif %}<a href="{% url 'expense_list' %}" class="btn btn-outline-secondary">All expenses</a>{% if invoice.status != "cancelled" %}<form method="post" action="{% url 'expense_delete' invoice.pk %}" onsubmit="return confirm('Cancel this expense with a reason? Financial history will be retained.');">{% csrf_token %}<label for="cancel-reason">Cancellation reason</label><input id="cancel-reason" name="reason" maxlength="500" required><button type="submit" class="btn btn-outline-danger">Cancel expense</button></form>{% endif %}</div></div>
+<section class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3 expense-detail-kpis">
+    <div class="col"><div class="expense-kpi card h-100"><span>Total</span><strong>₹{{ invoice.total_amount|floatformat:2 }}</strong></div></div>
+    <div class="col"><div class="expense-kpi card h-100"><span>Paid</span><strong>₹{{ paid|floatformat:2 }}</strong></div></div>
+    <div class="col"><div class="expense-kpi card h-100"><span>Outstanding</span><strong>₹{{ outstanding|floatformat:2 }}</strong></div></div>
+    <div class="col"><div class="expense-kpi card h-100"><span>Payment status</span><strong class="expense-state-text">{% if is_overdue %}Overdue{% else %}{{ payment_state|title }}{% endif %}</strong></div></div>
+</section>
+<div class="row g-3 mt-1">
+    <div class="col-12 col-xl-7"><section class="expense-panel card h-100"><div class="expense-panel-heading"><h2>Expense information</h2><span class="expense-status {% if is_overdue %}status-overdue{% else %}status-{{ payment_state }}{% endif %}">{% if is_overdue %}Overdue{% else %}{{ payment_state|title }}{% endif %}</span></div>
+        <dl class="expense-detail-grid">
+            <div><dt>Category</dt><dd>{{ detail.category.name|default:"Uncategorized" }}</dd></div>
+            <div><dt>Supplier</dt><dd>{{ invoice.supplier_name }}</dd></div>
+            <div><dt>Supplier GSTIN</dt><dd>{{ invoice.supplier_gstin|default:"—" }}</dd></div>
+            <div><dt>Reference number</dt><dd>{{ detail.reference_number|default:invoice.invoice_number }}</dd></div>
+            <div><dt>Expense date</dt><dd>{% include 'invoices/_invoice_date.html' %}</dd></div>
+            <div><dt>Due date</dt><dd>{{ invoice.due_date|date:"d M Y"|default:"—" }}</dd></div>
+            <div><dt>Value before GST</dt><dd>₹{{ invoice.taxable_amount|floatformat:2 }}</dd></div>
+            <div><dt>CGST</dt><dd>₹{{ invoice.cgst_amount|floatformat:2 }}</dd></div>
+            <div><dt>SGST</dt><dd>₹{{ invoice.sgst_amount|floatformat:2 }}</dd></div>
+            <div><dt>IGST</dt><dd>₹{{ invoice.igst_amount|floatformat:2 }}</dd></div>
+            <div><dt>GST total</dt><dd>₹{{ invoice.total_tax|floatformat:2 }}</dd></div>
+            <div><dt>Discount</dt><dd>₹{{ saved_discount|floatformat:2 }}</dd></div>
+        </dl>
+        {% if detail.description %}<div class="expense-notes"><h3>Description</h3><p>{{ detail.description|linebreaksbr }}</p></div>{% endif %}
+        {% if detail.notes %}<div class="expense-notes"><h3>Notes</h3><p>{{ detail.notes|linebreaksbr }}</p></div>{% endif %}
+        <div class="expense-notes"><h3>Attachment</h3>{% if attachment_name %}<a href="{% url 'expense_attachment' invoice.pk %}">{{ attachment_name }}</a><a class="ms-2" href="{% url 'expense_attachment' invoice.pk %}?download=1">Download</a>{% if attachment_is_image %}<img class="expense-attachment-preview d-block mt-3" src="{% url 'expense_attachment' invoice.pk %}?inline=1" alt="Expense receipt preview">{% else %}<a class="d-block mt-2" href="{% url 'expense_attachment' invoice.pk %}?inline=1" target="_blank" rel="noopener">Preview PDF</a>{% endif %}{% else %}<span class="text-muted">No attachment uploaded</span>{% endif %}</div>
+    </section></div>
+    <div class="col-12 col-xl-5"><section class="expense-panel card h-100"><div class="expense-panel-heading"><div><h2>Record payment</h2><p>Maximum remaining balance: ₹{{ outstanding|floatformat:2 }}</p></div></div>
+        {% if outstanding > 0 and invoice.status == "verified" %}<form method="post" action="{% url 'expense_payment' invoice.pk %}" class="row g-3">{% csrf_token %}
+            {% for field in payment_form %}{% if field.name == "invoice" %}<div class="d-none">{{ field }}</div>{% else %}<div class="col-12"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+            <div class="col-12"><button class="btn btn-primary" type="submit">Record Payment</button></div>
+        </form>{% else %}<p class="text-muted mb-0">{% if invoice.status == "cancelled" %}This expense is cancelled.{% else %}This expense is fully paid.{% endif %}</p>{% endif %}
+    </section></div>
+</div>
+<section class="expense-panel card mt-3"><div class="expense-panel-heading"><h2>Payment history</h2></div><div class="table-responsive"><table class="table expense-table align-middle mb-0"><thead><tr><th>Date</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Notes</th></tr></thead><tbody>{% for payment in payments %}<tr><td>{{ payment.payment_date|date:"d M Y" }}</td><td class="amount">₹{{ payment.amount|floatformat:2 }}</td><td>{{ payment.get_payment_mode_display }}</td><td>{{ payment.reference_id }}</td><td>{{ payment.notes|default:"—" }}</td></tr>{% empty %}<tr><td colspan="5" class="text-muted py-4">No payments recorded.</td></tr>{% endfor %}</tbody></table></div></section>
+{% if audit_events %}<section class="expense-panel card mt-3"><div class="expense-panel-heading"><h2>Change history</h2></div><div class="table-responsive"><table class="table expense-table align-middle mb-0"><thead><tr><th>When</th><th>Action</th><th>By</th><th>Details</th></tr></thead><tbody>{% for event in audit_events %}<tr><td>{{ event.created_at|date:"d M Y, H:i" }}</td><td>{{ event.get_action_display }}</td><td>{{ event.actor_label|default:"System" }}</td><td><a href="{% url 'audit_event_detail' event.pk %}">{{ event.description }}</a></td></tr>{% endfor %}</tbody></table></div></section>{% endif %}
+<section class="card card-body mt-3"><h2>ITC preparation</h2><p>{{ itc.status|title }} · {{ itc.reason }}</p><p>Reviewed amount: {{ itc.amount }}. This is not a claim or statutory filing.</p><a href="{% url 'expense_itc_review' invoice.pk %}">Review ITC</a>{% for review in itc_reviews %}<p>{{ review.created_at }} · {{ review.get_status_display }} · {{ review.reason }}</p>{% endfor %}</section><section class="card card-body mt-3"><h2>Retained receipts</h2>{% for receipt in receipt_revisions %}<p><a href="{% url 'expense_receipt_revision' receipt.pk %}">{{ receipt.display_name }}</a> · {{ receipt.created_at }}</p>{% empty %}<p>Future receipt changes retain original references; historical files are not backfilled.</p>{% endfor %}</section>{% if invoice.invoice_type == 'purchase' %}<p>Linked purchase <a href="{% url 'invoice_detail' invoice.pk %}">{{ invoice.invoice_number }}</a> remains the only financial record. Expense-register totals overlap purchase totals.</p>{% endif %}{% if invoice.status == 'review' %}<a href="{% url 'invoice_detail' invoice.pk %}">Complete extraction review and separate verification</a>{% endif %}
+{% endblock %}

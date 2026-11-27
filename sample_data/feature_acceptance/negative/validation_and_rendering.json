@@ -1,0 +1,52 @@
+[
+  {
+    "case": "NEGATIVE-QUANTITY",
+    "input": {
+      "quantity": "-1"
+    },
+    "expected": "Field validation rejects; no saved financial action"
+  },
+  {
+    "case": "DISCOUNT-OVER-VALUE",
+    "input": {
+      "rate": "100",
+      "discount": "101"
+    },
+    "expected": "Calculation rejects"
+  },
+  {
+    "case": "UNSUPPORTED-RATE",
+    "input": {
+      "tax_rate": "17"
+    },
+    "expected": "Rate selection/engine rejects"
+  },
+  {
+    "case": "OVERPAYMENT",
+    "base_case": "EXCLUSIVE-18",
+    "payment_amount": "1180.01",
+    "expected": "Reject with zero payment rows created"
+  },
+  {
+    "case": "FORMULA-NAME",
+    "party_name": "=1+1",
+    "expected": "Display as text; exported CSV/XLSX text must be formula-neutralized"
+  },
+  {
+    "case": "HTML-NAME",
+    "party_name": "<b>Synthetic test</b>",
+    "expected": "Escape markup; do not interpret as HTML"
+  },
+  {
+    "case": "BAD-CHECKSUM",
+    "gstin": "27PQRST5678L1Z1",
+    "expected": "Local checksum validation fails"
+  },
+  {
+    "case": "DATE-UNDERFLOW",
+    "query": {
+      "end_date": "0001-01-01"
+    },
+    "expected": "Validation error; KNOWN CURRENT BUG: OverflowError"
+  }
+]

@@ -1,0 +1,14 @@
+{% if form.non_field_errors %}<div class="auth-alert auth-alert-error" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}
+<div class="auth-field{% if field.errors %} auth-field-invalid{% endif %}">
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %}<span class="auth-optional">Optional</span>{% endif %}</label>
+    <div class="auth-input-wrap{% if field.field.widget.input_type == 'password' %} auth-password{% endif %}">
+        {{ field }}
+        {% if field.field.widget.input_type == 'password' %}
+        <button class="auth-toggle" type="button" data-password-toggle="{{ field.id_for_label }}" aria-controls="{{ field.id_for_label }}" aria-label="Show {{ field.label|lower }}" aria-pressed="false" hidden>Show</button>
+        {% endif %}
+    </div>
+    {% if field.help_text %}<div class="auth-help" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+    {% if field.errors %}<div class="auth-errors" role="alert">{{ field.errors }}</div>{% endif %}
+</div>
+{% endfor %}

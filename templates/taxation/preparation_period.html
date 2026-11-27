@@ -1,0 +1,6 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Tax period: {{ period.start_date }} – {{ period.end_date }}</h1><p>{{ period.get_kind_display }} · {{ period.status }} · Working preparation only</p>
+<div class="card my-3"><div class="card-body"><h2 class="h5">Gather and review</h2>{% for key,label in kinds %}<a class="btn btn-outline-primary m-1" href="{% url 'tax_preview' period.pk key %}">{{ label }}</a>{% endfor %}</div></div>
+<table class="table"><thead><tr><th>Saved working paper</th><th>Revision</th><th>Status</th><th>Prepared</th></tr></thead><tbody>{% for paper in papers %}<tr><td><a href="{% url 'tax_paper' paper.pk %}">{{ paper.get_kind_display }}</a></td><td>{{ paper.revision }}</td><td>{{ paper.status }}</td><td>{{ paper.prepared_at }}</td></tr>{% empty %}<tr><td colspan="4">No prepared working papers.</td></tr>{% endfor %}</tbody></table>
+{% if papers.has_previous %}<a href="?page={{ papers.previous_page_number }}">Previous</a>{% endif %} {% if papers.has_next %}<a href="?page={{ papers.next_page_number }}">Next</a>{% endif %}
+{% if panel %}{% include 'taxation/_review_panel.html' %}{% endif %}{% endblock %}

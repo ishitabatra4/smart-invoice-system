@@ -1,0 +1,54 @@
+{% extends "base.html" %}{% load static %}
+{% block title %}{{ page_title }} | Smart Invoice{% endblock %}
+{% block content %}
+<div class="expense-page-header"><div><p class="eyebrow mb-2">BUSINESS COSTS</p><h1>{{ page_title }}</h1><p>Expense details, tax and payment information.</p></div><a href="{% if invoice %}{% url 'expense_detail' invoice.pk %}{% else %}{% url 'expense_list' %}{% endif %}" class="btn btn-outline-secondary">Cancel</a></div>
+<form method="post" enctype="multipart/form-data" class="expense-form" data-gst-preview-url="{% url 'expense_calculate' %}" data-gst-preview-target="expense-total-preview" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+    <section class="expense-panel card"><div class="expense-form-heading"><h2>Expense details</h2></div><div class="row g-3">
+        {% for field in form %}
+        {% if field.name == "supplier_party" or field.name == "add_new_supplier" or field.name == "supplier_name" or field.name == "supplier_gstin" or field.name == "supplier_email" or field.name == "supplier_phone" or field.name == "amount" or field.name == "gst_rate" or field.name == "gst_inclusive" or field.name == "discount" or field.name == "payment_status" or field.name == "amount_paid" or field.name == "payment_date" or field.name == "payment_mode" or field.name == "payment_reference" or field.name == "attachment" or field.name == "remove_attachment" %}
+        {% else %}
+        <div class="col-12 {% if field.name == 'description' or field.name == 'notes' %}col-lg-12{% else %}col-md-6{% endif %}"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="form-text">{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>
+        {% endif %}
+        {% endfor %}
+    </div></section>
+
+    <section class="expense-panel card mt-3"><div class="expense-form-heading"><h2>Supplier</h2><p>Choose an existing business party or add a supplier.</p></div><div class="row g-3">
+        <div class="col-md-6"><label class="form-label" for="{{ form.supplier_party.id_for_label }}">{{ form.supplier_party.label }}</label>{{ form.supplier_party }}{% for error in form.supplier_party.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>
+        {% if form.add_new_supplier %}<div class="col-md-6 supplier-new-toggle"><div class="form-check mt-md-4">{{ form.add_new_supplier }}<label class="form-check-label" for="{{ form.add_new_supplier.id_for_label }}">{{ form.add_new_supplier.label }}</label></div></div>
+        <div class="row g-3 mt-1 {% if not form.add_new_supplier.value %}d-none{% endif %}" id="new-supplier-fields">
+            {% for field in form %}{% if field.name == "supplier_name" or field.name == "supplier_gstin" or field.name == "supplier_email" or field.name == "supplier_phone" %}<div class="col-md-6"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+        </div>{% endif %}
+    </div></section>
+
+    <section class="expense-panel card mt-3"><div class="expense-form-heading"><h2>Financial details</h2><p>Totals are calculated with decimal rounding and checked again when saved.</p></div><div class="row g-3">
+        {% for field in form %}{% if field.name == "amount" or field.name == "gst_rate" or field.name == "gst_inclusive" or field.name == "discount" %}<div class="col-6 col-lg-3"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="form-text">{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+    </div><div class="expense-total-preview mt-3" id="expense-total-preview" aria-live="polite">Enter amount and GST rate to preview totals.</div></section>
+
+    {% if form.payment_status %}<section class="expense-panel card mt-3"><div class="expense-form-heading"><h2>Payment</h2><p>Payments are attached to this expense and cannot exceed its balance.</p></div><div class="row g-3">
+        <div class="col-md-4"><label class="form-label" for="{{ form.payment_status.id_for_label }}">{{ form.payment_status.label }}</label>{{ form.payment_status }}{% for error in form.payment_status.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>
+        {% for field in form %}{% if field.name == "amount_paid" or field.name == "payment_date" or field.name == "payment_mode" or field.name == "payment_reference" %}<div class="col-md-4 payment-fields"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+    </div></section>{% endif %}
+
+    <section class="expense-panel card mt-3"><div class="expense-form-heading"><h2>Receipt or bill</h2><p>Optional · PDF, JPG, JPEG or PNG · up to 10 MB</p></div>
+        <label class="form-label" for="{{ form.attachment.id_for_label }}">{{ form.attachment.label }}</label>{{ form.attachment }}{% for error in form.attachment.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+        {% if current_attachment_name %}<div class="mt-2 small">Current file: <a href="{% url 'expense_attachment' invoice.pk %}">{{ current_attachment_name }}</a></div><div class="form-check mt-2">{{ form.remove_attachment }}<label class="form-check-label" for="{{ form.remove_attachment.id_for_label }}">Remove current attachment</label>{% for error in form.remove_attachment.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endif %}
+    </section>
+    <p>{{ form.acknowledge_duplicates }} <label for="{{ form.acknowledge_duplicates.id_for_label }}">{{ form.acknowledge_duplicates.label }}</label></p><div class="expense-form-actions"><button type="submit" class="btn btn-primary">{{ submit_label }}</button><a class="btn btn-outline-secondary" href="{% if invoice %}{% url 'expense_detail' invoice.pk %}{% else %}{% url 'expense_list' %}{% endif %}">Cancel</a></div>
+</form>
+{% endblock %}
+{% block page_scripts %}
+<script>
+(() => {
+    const toggle = document.getElementById("id_add_new_supplier");
+    const supplierFields = document.getElementById("new-supplier-fields");
+    if (toggle && supplierFields) toggle.addEventListener("change", () => supplierFields.classList.toggle("d-none", !toggle.checked));
+    const status = document.getElementById("id_payment_status");
+    const paymentFields = document.querySelectorAll(".payment-fields");
+    const updatePaymentFields = () => paymentFields.forEach((field) => field.classList.toggle("d-none", !status || status.value === "unpaid"));
+    if (status) { status.addEventListener("change", updatePaymentFields); updatePaymentFields(); }
+})();
+</script>
+<script src="{% static 'js/gst-preview.js' %}" defer></script>
+{% endblock %}

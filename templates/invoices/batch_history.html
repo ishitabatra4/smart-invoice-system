@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Invoice Upload History | Smart Invoice{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Upload history</h1><p>Review recent invoice batches and download their workbooks.</p></div><a class="btn btn-primary" href="{% url 'invoice_upload' %}">Upload invoices</a></div>
+<div class="alert alert-info mt-3">Batches are recorded from the time this feature is enabled. Previously uploaded invoices remain available in the invoice register and are not reassigned to a batch.</div>
+<section class="card mt-3"><div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Batch</th><th>Type</th><th>Uploaded</th><th>Files</th><th>Processed</th><th>Needs attention</th><th></th></tr></thead><tbody>
+{% for batch in batches %}<tr><td><a href="{% url 'invoice_batch_detail' batch.pk %}">#{{ batch.pk }}</a></td><td>{{ batch.get_invoice_type_display }}</td><td>{{ batch.created_at|date:"d M Y, H:i" }}</td><td>{{ batch.file_count }}</td><td>{{ batch.invoices.count }}</td><td>{{ batch.failed_files|length }}</td><td><a class="btn btn-sm btn-outline-primary" href="{% url 'invoice_batch_detail' batch.pk %}">View batch</a></td></tr>
+{% empty %}<tr><td colspan="7" class="text-center text-muted py-5">No upload batches yet.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

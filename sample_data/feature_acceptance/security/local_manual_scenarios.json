@@ -1,0 +1,33 @@
+[
+  {
+    "id": "TENANT-ISOLATION",
+    "setup": "Two separate local demo accounts/businesses; no shared financial records.",
+    "action": "Try a known other-demo invoice/source/PDF/audit/export URL while signed in as the first demo user.",
+    "expected": "404/403 without resource-existence disclosure; no cross-business content"
+  },
+  {
+    "id": "FAILED-LOGIN",
+    "action": "Five wrong-password attempts for the same explicitly created synthetic identity on the isolated local app.",
+    "expected": "One AUTH_FAILURE_BURST alert per scope/bucket, not an invented account lock. Existing per-IP request throttle may apply."
+  },
+  {
+    "id": "ALERT-REVIEW",
+    "action": "Use authorized security staff to acknowledge/investigate/resolve with reasons.",
+    "expected": "History retained; ordinary owner cannot dismiss; repeated same status creates no duplicate decision"
+  },
+  {
+    "id": "SESSION-REVOKE",
+    "action": "Sign in to the synthetic account in two local browser profiles; revoke other observed sessions after password confirmation.",
+    "expected": "Other observed session rejected on next request; own current session stays usable. Never put raw tokens in sample files."
+  },
+  {
+    "id": "EXPORT-REDaction",
+    "action": "Use harmless names from negative/validation_and_rendering.json, then export CSV/XLSX/PDF.",
+    "expected": "Escaped HTML, formula-safe spreadsheet text, no secrets; verify filtered IDs"
+  },
+  {
+    "id": "INTEGRITY",
+    "action": "Run read-only verify_audit_security; any tamper experiment must use a disposable copy only.",
+    "expected": "Legacy unsealed coverage is separate. Never change the main audit log or protected backups."
+  }
+]

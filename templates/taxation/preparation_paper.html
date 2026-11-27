@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Saved tax working paper {{ paper.pk }}</h1><p>Revision {{ paper.revision }} · {{ paper.status }} · Prepared {{ paper.prepared_at }} by {{ paper.prepared_by }}.</p>
+
+{% if is_stale %}<div class="alert alert-warning">Source evidence or rule version changed. This saved body remains unchanged; prepare an explicit revision before review.</div>{% endif %}
+<p><a class="btn btn-outline-primary" href="{% url 'tax_paper_export' paper.pk 'csv' %}">CSV with audit evidence</a> <a class="btn btn-outline-primary" href="{% url 'tax_paper_export' paper.pk 'xlsx' %}">Excel</a> <a class="btn btn-outline-primary" href="{% url 'tax_paper_export' paper.pk 'pdf' %}">PDF</a></p>
+{% if paper.status == 'prepared' or paper.status == 'reviewed' %}<p><a href="{% url 'tax_preview' paper.period_id paper.kind %}?revise={{ paper.pk }}">Prepare explicit new revision</a></p><form method="post" action="{% url 'tax_paper_status' paper.pk %}">{% csrf_token %}<label for="status">Working status</label><select id="status" name="status"><option value="reviewed">Reviewed working paper</option><option value="archived">Archived</option></select><label for="reason">Review/archive reason</label><input id="reason" name="reason" maxlength="500" required><button class="btn btn-primary">Record decision</button></form>{% endif %}
+{% include 'taxation/preparation_summary.html' %}
+<h2 class="h5">Append-only lifecycle</h2><ul>{% for event in paper.events.all %}<li>{{ event.created_at }} · {{ event.status }} · {{ event.actor }} · {{ event.reason }}</li>{% endfor %}</ul>
+{% endblock %}

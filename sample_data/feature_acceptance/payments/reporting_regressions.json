@@ -1,0 +1,47 @@
+{
+  "historical_paid": {
+    "source_case": "HISTORICAL-PAYMENT",
+    "payment_date": "2026-11-10",
+    "amount": "1180.00",
+    "reference_id": "FEATURE-LATE-PAYMENT-001",
+    "expected_october_31_outstanding": "1180.00",
+    "expected_november_30_outstanding": "0.00",
+    "known_current_bug": "Current paid-status shortcut can incorrectly show October as zero."
+  },
+  "both_party": {
+    "sources": [
+      "BOTH-SALE",
+      "BOTH-PURCHASE"
+    ],
+    "sale_debit": "100.00",
+    "purchase_credit": "80.00",
+    "net_debit_minus_credit": "20.00",
+    "separate_receivable": "100.00",
+    "separate_payable": "80.00",
+    "known_current_display": "Running balance may display 180.00; do not treat it as net settlement."
+  },
+  "partial": {
+    "source_case": "EXCLUSIVE-18",
+    "payments": [
+      {
+        "payment_date": "2026-11-05",
+        "amount": "500.00",
+        "reference_id": "FEATURE-PARTIAL-001"
+      },
+      {
+        "payment_date": "2026-11-10",
+        "amount": "680.00",
+        "reference_id": "FEATURE-PARTIAL-002"
+      }
+    ],
+    "after_first_outstanding": "680.00",
+    "after_second_outstanding": "0.00",
+    "duplicate_reference": "Repeating a reference for the same invoice must not create another payment."
+  },
+  "date_controls": {
+    "selected_preset": "this_month",
+    "entered_start": "2026-10-01",
+    "entered_end": "2026-10-31",
+    "expected": "Choose Custom explicitly until the identified date-control issue is fixed. Current presets may ignore entered dates."
+  }
+}

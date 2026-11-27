@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Tax preparation | Smart Invoice{% endblock %}
+{% block content %}
+<div class="page-header"><div><h1>Tax preparation</h1><p>Working papers and estimates. No government filing, tax payment or authenticated GSTR-2B verification.</p></div></div>
+{% if not available %}<div class="alert alert-warning">Tax working-paper storage requires the new migration. Development migration approval is pending.</div>{% else %}
+<div class="card my-3"><div class="card-body"><h2 class="h5">Select a preparation period</h2><form method="post">{% csrf_token %}{{ form.as_p }}<button class="btn btn-primary">Create or select period</button></form><p>Indian financial years run April–March. Overlapping periods are disclosed and must not be added together.</p></div></div>
+<div class="table-responsive"><table class="table"><thead><tr><th>Period</th><th>Kind</th><th>Latest working status</th></tr></thead><tbody>{% for period in periods %}<tr><td><a href="{% url 'tax_period' period.pk %}">{{ period.start_date }} – {{ period.end_date }}</a></td><td>{{ period.get_kind_display }}</td><td>{{ period.status }}</td></tr>{% empty %}<tr><td colspan="3">No preparation periods.</td></tr>{% endfor %}</tbody></table></div>
+{% if periods.has_previous %}<a href="?page={{ periods.previous_page_number }}">Previous</a>{% endif %} {% if periods.has_next %}<a href="?page={{ periods.next_page_number }}">Next</a>{% endif %}
+{% endif %}{% if panel %}{% include 'taxation/_review_panel.html' %}{% endif %}{% endblock %}

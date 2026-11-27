@@ -1,10 +1,60 @@
 
 from django.urls import path
-from . import views
+from . import ledger_views as ledger_views
+from . import views as invoice_views
+from . import extraction_views
+from . import management_views
+from . import adjustment_views
+from . import batch_views, manual_views, pdf_views, email_views, commercial_views
 
 urlpatterns = [
-    path("", views.invoice_list_view, name="invoice_list"),
-    path("upload/", views.invoice_upload_view, name="invoice_upload"),
-    path("<int:invoice_id>/delete/",views.invoice_delete_view,name="invoice_delete",),
-    path("<int:invoice_id>/", views.invoice_detail_view, name="invoice_detail"),
+    path("<int:invoice_id>/change-type/", management_views.provisional_action, {'operation':'change_type'}, name="invoice_change_type"),
+    path("<int:invoice_id>/restore/", management_views.provisional_action, {'operation':'restore'}, name="invoice_restore"),
+    path("extractions/", extraction_views.extraction_history, name="extraction_history"),
+    path("extractions/<int:attempt_id>/review/", extraction_views.extraction_review, name="extraction_review"),
+    path("extractions/<int:attempt_id>/source/", extraction_views.extraction_source, name="extraction_source"),
+    path("extractions/<int:attempt_id>/retry/", extraction_views.extraction_retry, name="extraction_retry"),
+    path("adjustments/", adjustment_views.adjustment_list, name="adjustment_list"),
+    path("adjustments/create/", adjustment_views.adjustment_form, name="adjustment_create"),
+    path("adjustments/report/", adjustment_views.adjustment_report, name="adjustment_report"),
+    path("adjustments/<int:note_id>/", adjustment_views.adjustment_detail, name="adjustment_detail"),
+    path("adjustments/<int:note_id>/edit/", adjustment_views.adjustment_form, name="adjustment_edit"),
+    path("adjustments/<int:note_id>/pdf/", adjustment_views.adjustment_pdf, name="adjustment_pdf"),
+    path("adjustments/<int:note_id>/transition/<str:action>/", adjustment_views.adjustment_transition, name="adjustment_transition"),
+    path("adjustments/<int:note_id>/email/", adjustment_views.adjustment_email, name="adjustment_email"),
+    path("adjustments/<int:note_id>/email/<int:delivery_id>/retry/", adjustment_views.adjustment_email, name="adjustment_email_retry"),
+    path("commercial/", commercial_views.commercial_list, name="commercial_list"),
+    path("commercial/create/<str:kind>/", commercial_views.commercial_form, name="commercial_create"),
+    path("commercial/calculate/<str:kind>/", commercial_views.commercial_calculate, name="commercial_calculate"),
+    path("commercial/<int:document_id>/", commercial_views.commercial_detail, name="commercial_detail"),
+    path("commercial/<int:document_id>/edit/", commercial_views.commercial_form, name="commercial_edit"),
+    path("commercial/<int:document_id>/pdf/", commercial_views.commercial_pdf, name="commercial_pdf"),
+    path("commercial/<int:document_id>/transition/<str:action>/", commercial_views.commercial_transition, name="commercial_transition"),
+    path("commercial/<int:document_id>/convert/", commercial_views.commercial_convert, name="commercial_convert"),
+    path("commercial/<int:document_id>/email/", commercial_views.commercial_email, name="commercial_email"),
+    path("commercial/<int:document_id>/email/<int:delivery_id>/retry/", commercial_views.commercial_email, name="commercial_email_retry"),
+    path("<int:invoice_id>/email/", email_views.invoice_email_view, name="invoice_email"),
+    path("<int:invoice_id>/email/<int:delivery_id>/retry/", email_views.invoice_email_view, name="invoice_email_retry"),
+    path("<int:invoice_id>/pdf/", pdf_views.invoice_pdf_view, name="invoice_pdf"),
+    path("calculate/<str:invoice_type>/", manual_views.calculation_preview_view, name="invoice_calculate"),
+    path("create/<str:invoice_type>/", manual_views.manual_invoice_view, name="invoice_create"),
+    path("<int:invoice_id>/draft/", manual_views.manual_invoice_view, name="invoice_draft_edit"),
+    path("<int:invoice_id>/finalize/", manual_views.manual_finalize_view, name="invoice_finalize"),
+    path("<int:invoice_id>/preview/", manual_views.manual_preview_view, name="invoice_preview"),
+    path("<int:invoice_id>/source/", invoice_views.invoice_source_view, name="invoice_source"),
+    path("parties/", ledger_views.party_list_view, name="party_list"),
+    path("parties/add/", ledger_views.party_create_view, name="party_add"),
+    path("parties/<int:party_id>/edit/", ledger_views.party_edit_view, name="party_edit"),
+    path("parties/<int:party_id>/", ledger_views.party_detail_view, name="party_detail"),
+    path("parties/<int:party_id>/ledger.xlsx", ledger_views.party_ledger_export_view, name="party_ledger_export"),
+    path("outstanding/", ledger_views.outstanding_dashboard_view, name="outstanding_dashboard"),
+    path("", invoice_views.invoice_list_view, name="invoice_list"),
+    path("upload/", invoice_views.invoice_upload_view, name="invoice_upload"),
+    path("batches/", batch_views.invoice_batch_history_view, name="invoice_batch_history"),
+    path("batches/<int:batch_id>/", batch_views.invoice_batch_detail_view, name="invoice_batch_detail"),
+    path("batches/<int:batch_id>/export.xlsx", batch_views.invoice_batch_export_view, name="invoice_batch_export"),
+    path("<int:invoice_id>/edit/", invoice_views.invoice_edit_view, name="invoice_edit"),
+    path("<int:invoice_id>/verify/", invoice_views.invoice_verify_view, name="invoice_verify"),
+    path("<int:invoice_id>/delete/", invoice_views.invoice_delete_view, name="invoice_delete"),
+    path("<int:invoice_id>/", invoice_views.invoice_detail_view, name="invoice_detail"),
 ]

@@ -1,0 +1,55 @@
+%PDF-1.4
+%Sample invoice library
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Length 1082 >>
+stream
+BT /F2 16 Tf 48 755 Td (TAX INVOICE) Tj ET
+BT /F2 13 Tf 48 732 Td (Harbor Components) Tj ET
+BT /F2 9 Tf 48 709 Td (SAMPLE / TESTING DOCUMENT - FICTIONAL TRANSACTION) Tj ET
+BT /F1 10 Tf 48 690 Td (Invoice Number RIV2026/007) Tj ET
+BT /F1 10 Tf 48 667 Td (Invoice Date 22/08/2026) Tj ET
+BT /F1 10 Tf 48 644 Td (Due Date 22/09/2026) Tj ET
+BT /F1 10 Tf 48 621 Td (Supplier GSTIN 29HARBO1234C1Z3) Tj ET
+BT /F2 10 Tf 48 598 Td (Bill To) Tj ET
+BT /F1 10 Tf 48 575 Td (Northstar Demo Trading Co) Tj ET
+BT /F1 10 Tf 48 552 Td (Buyer GSTIN 27ZZZAA1234B1Z1) Tj ET
+BT /F2 9 Tf 48 529 Td (No  Description / HSN  Qty  Rate  Taxable  Tax Rate) Tj ET
+BT /F1 9 Tf 48 510 Td (1 Switching relay modules 8536 15.00 300.00 4500.00 12.00%) Tj ET
+BT /F1 10 Tf 48 491 Td (Taxable Amount 4500.00) Tj ET
+BT /F1 10 Tf 48 468 Td (CGST 0.00) Tj ET
+BT /F1 10 Tf 48 445 Td (SGST 0.00) Tj ET
+BT /F1 10 Tf 48 422 Td (IGST 540.00) Tj ET
+BT /F1 10 Tf 48 399 Td (Other Charges 0.00) Tj ET
+BT /F2 12 Tf 48 376 Td (Grand Total 5040.00) Tj ET
+BT /F1 8 Tf 48 353 Td (Prepared for Smart Invoice sample testing only.) Tj ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000033 00000 n 
+0000000082 00000 n 
+0000000139 00000 n 
+0000000275 00000 n 
+0000000345 00000 n 
+0000000420 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1553
+%%EOF
